@@ -1,0 +1,71 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\title{CSC165H1 Problem Set 0}
+\author{Frederick Meneses }
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\section*{Question 2}
+\begin{itemize}
+    \item CSC165H1 S Mathematical Expression and Reasoning for Computer Science Lindsey Shorser
+    \item CSC148H1 S Introduction to Computer Science Jonathan Calver
+    \item MAT137Y1 Y Calculus with Proofs Alfonso Gracia-Saz
+    \item MAT223H1 S Linear Algebra I Alfonso Gracia-Saz
+    \item PHL233H1S Philosophy for Scientists Alexander Koo
+    
+\end{itemize}
+
+\section*{Question 3}
+Let
+    \[S_1 = \{108, 148, 165, 207, 209, 236, 258, 263, 369, 373\}\] 
+and \[S_2 = \{x \mid \exists{k} \in \mathbb{Z},  x=4k\}\]
+So,
+    \[S_1 \setminus S_2 = \{165, 207, 209, 258, 263, 369, 373\}\]
+
+\section*{Question 4}
+\begin{tabular}{|c|c|c|c|}
+     p & q & r & $\lnot(p \land q \land r) \iff (p \implies q)$ \\
+     F & F & F & T \\
+     F & F & T & T \\
+     F & T & T & T \\
+     F & T & F & T \\
+     T & T & T & F \\
+     T & T & F & T \\
+     T & F & F & F \\
+     T & F & T & F \\
+\end{tabular}
+
+\section*{Question 5}
+Using the identity for all $n \in \mathbb{N}$ and all $d, k \in \mathbb{R}$
+\begin{align*}
+    \sum_{i=0}^{n-1} (di +k) \;=&\; nk + \frac{dn(n-1)}{2} \\
+    \sum_{i=0}^{n-1} (4i-315) \;=&\; -315n + \frac{4n(n-1)}{2} \\
+\end{align*}
+We want this to equal 2020 temporarily,
+\begin{align*}
+    2020 \;=&\; -315n + \frac{4n(n-1)}{2}\\
+     \;=&\; -634n + 4n^2 -4040
+\end{align*}
+Using the quadratic formula:
+\begin{align*}
+    n \;=&\; \frac{634 \pm \sqrt{(-634)^2 - 4(4)(-4040)}}{2(4)} \\
+    n \;\approx&\; 
+    \begin{cases}
+    164.63 \\
+    -6.13
+    \end{cases}
+\end{align*}
+Since $n \in \mathbb{N}$,
+\begin{align*}
+    n = 165
+\end{align*}
+Plugging $n$ back into the equation:
+\begin{align*}
+    -315(165) + \frac{4(165)(165-1)}{2} = 2145 >2020 
+\end{align*}
+which was what I wanted to show.
+\end{document}
