@@ -1,0 +1,568 @@
+\documentclass[12pt]{article}
+
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[margin=2cm,headheight=3ex]{geometry}
+\usepackage{csc}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{csquotes}
+\usepackage[normalem]{ulem}
+\usepackage{enumerate}
+\renewcommand\labelenumi{(\alph{enumi})}
+
+% \newcommand{\R}{\mathbb{R}}
+% \newcommand{\N}{\mathbb{N}}
+% \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\T}{\True}
+\newcommand{\F}{\False}
+\theoremstyle{definition}
+\newtheorem{case}{Case}
+\newtheorem*{induction}{Induction}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{Junaid Arshad, Sadeed Ahmed, \& Frederick Meneses}}
+\rhead{\fancyplain{}{CSC165 - Problem Set 2}}
+
+% Document Metadata
+\title{CSC165 - Problem Set 2}
+\author{Junaid Arshad, Sadeed Ahmed, \& Frederick Meneses}
+\date{March 4, 2022}
+
+\begin{document}
+\maketitle
+
+\section{Number Theory}
+
+\begin{enumerate}
+    \item The following proof will reference the following predicates and facts regarding properties of the greatest common divisor (taken from \textit{Worksheet 6 \& 7}):
+    \begin{align}
+        &LinComb(a, b, c) :\, \exists p, q \in \Z, c = pa + qb, \text{where $a, b, c \in \Z$}\\
+        &\forall n, p \in \Z, Prime(p) \land p \nmid n \implies gcd(p, n) = 1\\
+        &\forall n, m \in \N, \exists r, s, \in \Z, rn + sm = gcd(n, m)
+    \end{align}
+    The following is a proof that $\forall\,n \in \Z,\, gcd(7 n + 1, 15 n + 2) = 1$:
+    
+        \begin{proof}
+            Let $n \in \Z$. By fact \textbf{(1)}, we can re-write $7n + 1$ and $15n + 2$ as a linear combinations of the form $pa + qb = c$ for some $p, q \in \Z$ where $a, b \in \Z$. $7n + 1 = c_1$ and $15n + 2 = c_2$ for some $c_1, c_2 \in \Z$. In particular, $c_1 = \gcd(7, 1)$ and $c_2 = \gcd(2, 15)$. By fact \textbf{(2)} and our choices of $a$ and $b$, we can conclude $\gcd(2, 15) = 1$ and $\gcd(7, 1) = 1$. By fact \textbf{(3)}, it suffices to show that there exists integers $r, s$ such that, $r\gcd(7, 1) + s\gcd(2, 15) = \gcd(\gcd(7, 1), \gcd(2, 15)) = \gcd(1, 1) = 1$.
+            
+        \end{proof}
+        
+    \item The following is a proof that there exists only 1 prime in the form of $n^3 - 1$, or that:
+    \begin{align*}
+      \exists p \in \N, (Prime(p) \land (\exists n \in \Z, p = n^3 - 1)) \land \big(\forall q \in \N, (Prime(q) \land (\exists m \in \Z, q = m^3 - 1) \implies p = q\big)  
+    \end{align*}
+    Consider the definition of a Prime Number:
+    \begin{align}
+        Prime(n) : \, n > 1 \land \big(\forall d \in \N, d|n \implies d=1 \lor d=n\big), \text{where $n \in \N$}
+    \end{align}
+    
+    \begin{proof} $ $\newline 
+    We will prove the first part of the statement first i.e., \\
+    $\quad  \exists p \in \N, (Prime(p) \land (\exists n \in \Z, p = n^3 - 1))$
+    \begin{itemize}
+        \item Let $p = 7$
+        \item WTS: $(Prime(p) \land (\exists n \in \Z, p = n^3 - 1)$
+        \item $Prime(7)$ is True since $7 > 1$ and the only number that divide 7 are 1 and itself.
+        \item Let $n = 2$
+        \begin{align*}
+            n^{3} - 1 &= (2^{3} - 1) = 7 = p \\
+        \end{align*}
+    \end{itemize}
+    We want to show $p$ is a prime number such that $p = n^3 - 1$, where $n \in \Z$.\
+    
+     We know by the definition of a Prime Number that $p$ must be greater than 1, and only be divisible by itself or 1. Since $n^3 - 1$ can be re-written in its factored form as: $(n - 1)(n^2 + n + 1)$, either $(n - 1)$ or $(n^2 + n + 1)$ must be equal to 1. Also, since the resulting value must be greater than 1, it follows that the other must equal $p$, such that $p > 1$. We will prove this by setting each term to 1 and examining the other term and resulting value to verify if it is a prime number.\
+    
+    \begin{case}
+    $(n^2 + n + 1) = 1$ only when $n = 0$ or $n = -1$, but if we substitute either of these values of $n$ into the term $(n - 1)$, the resulting value is negative. Since prime numbers cannot be negative, it is clear that $(n^2 + n + 1)$ cannot be 1.\
+    \end{case}
+    \begin{case}
+    $(n - 1) = 1$ if and only if $n = 2$. When $n = 2$, the term $(n^2 + n + 1)$ evaluates to $7$, which is a prime number. Additionally, $n^3 - 1$ will evaluate to 7 in this case.\
+    \end{case}
+    
+    Next, we will prove that this is the only prime number which can take the form of $n^3 - 1$. From the definition of a Prime Number $(1)$ we also know that the only numbers that can divide a Prime Number are 1 and the prime number itself. From \textbf{Case 1}, we have seen that the only other values of $n \in \Z$ which evaluate one factor of $n^3 - 1$ do not produce prime numbers. From \textbf{Case 2}, we have seen the only value of $n \in \Z$ which produces a prime number. Thus, any other values produces from $n^3 - 1$ must not be prime as they will not be divisible by themselves or 1.
+    
+    
+    \end{proof}
+    
+\end{enumerate}
+
+\newpage
+\section{Floors and Ceilings}
+\setcounter{equation}{0}
+The following facts are referenced in this section:
+\begin{align}
+    \forall x \in \R, 0 \leq x-\lfloor x\rfloor<1\\
+    \forall x \in \R, 0 \leq\lceil x\rceil-x<1
+\end{align}
+\setcounter{case}{0}
+
+\begin{enumerate}
+    \item We will use \textbf{proof by cases} to show that:
+    \begin{align}
+        \forall x \in \Z, \left \lfloor \frac{x+1}{2} \right \rfloor = \left \lceil \frac{x}{2} \right \rceil
+    \end{align}
+    \begin{proof}
+        Let $x$ be an arbitrary integer. In order to prove \textbf{(3)}, we will examine the cases when $x$ is even and when $x$ is odd.
+        
+        \begin{case}[Even]
+            If $x$ is an even integer, 2 must divide $x$, or $Even(x): x = 2k, k \in \Z$. We will evaluate each term in $\lfloor \frac{x+1}{2} \rfloor = \left \lceil \frac{x}{2} \right \rceil$ with $2k$ substituted for $x$ below:
+            \begin{align*}
+                \floor{\frac{x+1}{2}} &= \floor{\frac{(2k)+1}{2}}\\
+                &= \floor{ k + \frac{1}{2}}\\
+                &= k\\
+                \\
+                \ceil{\frac{x}{2}} &= \ceil{\frac{2k}{2}}\\
+                &= \ceil{k}\\
+                &= k
+            \end{align*}
+            Thus, $\forall\, x \in \Z, Even(x)$, \textbf{(3)} holds.
+        \end{case}
+        \begin{case}[Odd]
+            If $x$ is an odd integer, $Odd(x): x = 2k - 1, k \in \Z$ must be true. We will evaluate each term in $\lfloor \frac{x+1}{2} \rfloor = \left \lceil \frac{x}{2} \right \rceil$ with $2k$ substituted for $x$ below:
+            \begin{align*}
+                \floor{\frac{x+1}{2}} &= \floor{\frac{(2k - 1)+1}{2}}\\
+                &= \floor{ k }\\
+                &= k\\
+                \\
+                \ceil{\frac{x}{2}} &= \ceil{\frac{2k-1}{2}}\\
+                &= \ceil{k - \frac{1}{2}}\\
+                &= k
+            \end{align*}
+            Thus, $\forall\, x \in \Z, Odd(x)$, \textbf{(3)} holds.
+        \end{case}
+        From \textbf{Case 1} and \textbf{Case 2}, we have shown that regardless of whether $x$ is even or odd, \textbf{(3)} holds.
+    \end{proof}
+    \item Proof and Disproof:
+        \begin{enumerate}[i]
+            \item The following is a proof that $\forall x, y \in \R, x \leq y \implies \lceil x \rceil \leq \lceil y \rceil$:
+            \begin{proof}
+                Let $x, y \in \R$. Assume that $x \leq y$. We will prove that $\ceil{x} \leq \ceil{y}$.
+                
+                From \textbf{(2)}, we know the following:
+                \begin{align*}
+                    x \leq \ceil{x} &< x + 1\\
+                    &\leq y + 1 \tag{using our assumption $x \leq y$}
+                \end{align*}
+                Thus, $\ceil{x} < y $.
+                
+                Similarly, from \textbf{(2)} we also know that $y \leq \ceil{y}$. Thus,  $y + 1 \leq \ceil{y} + 1$.
+                \begin{align*}
+                    \ceil{x} &< y + 1 \leq \ceil{y} + 1\\
+                    \ceil{x} &< \ceil{y} + 1 \\
+                    \leftrightarrow \ceil{x} &\leq \ceil{y}
+                \end{align*}
+                
+            \end{proof}
+            \item The following is a disproof that $\forall x, y \in \R, \lceil x \rceil \leq \lceil y \rceil \implies x \leq y$:
+            \begin{proof}
+                Statement to disprove:
+                \begin{align}
+                    \forall x, y \in \R, \lceil x \rceil \leq \lceil y \rceil \implies x \leq y
+                \end{align}
+                We will disprove this statement by proving its negation. The negation of \textbf{(4)} is:
+                \begin{align}
+                    \exists x, y \in \R, \ceil{x} \leq \ceil{y} \land x > y
+                \end{align}
+                Let $x = \frac{2}{3}$ and $y = \frac{1}{3}$. Thus, $x > y$ holds.
+                \begin{align*}
+                    \ceil{x} &= 1\tag{from \textbf{(2)}}\\
+                    \ceil{y} &= 1\tag{from \textbf{(2)}}\\
+                    \ceil{x} &\leq \ceil{y}
+                \end{align*}
+                Thus, $\ceil{x} \leq \ceil{y}$ holds, proving \textbf{(5)} and consequently disproving \textbf{(4)}.
+            \end{proof}
+        \end{enumerate}
+\end{enumerate}
+
+\newpage
+\section{Induction}
+\begin{enumerate}
+    \item The following is a proof that $3 | 2^{2n+1} + 1$ for all natural numbers $n$:\\
+    
+    Let $P(n): \exists k \in \Z, 2^{2n + 1} + 1 = 3k$, where $n \in \N$
+    
+    \begin{proof}We will prove this by induction. Let $n \in \N$, \\
+        \textbf{Base Case: } ($n = 0$)\\
+        Let $k = 1$, then 
+        \begin{align*}
+            2^{2(0) + 1} + 1 &= 3(1) \\
+            2 + 1 &= 3 \\
+            3 &= 3 \\
+        \end{align*}
+        \textbf{Inductive Step: }
+        
+        Let $q \in \N$. Assume $P(q): \exists k_0 \in \Z, 2^{2q + 1} + 1 = 3k_0$.
+        
+        WTS: $P(q+1): \exists k_1 \in \Z, 2^{2(q+1) + 1} + 1 = 3k_1$.
+        
+        Let $k_1 = 2^{2q + 1} + k_0$.
+        
+        We will prove $2^{2(q + 1) + 1} + 1 = 3k_1$
+        \begin{align*}
+            2^{2(q + 1) + 1} + 1 &= 2^2 \cdot 2^{2q + 1} + 1 \\
+           &= 3 \cdot 2^{2q + 1} + 2^{2q + 1} + 1 \\
+           &= 3 \cdot 2^{2q + 1} + 3k_0  \tag{I.H} \\
+           &= 3(2^{2q+1} + k_0) \\
+           &= 3k_1 
+       \end{align*}
+    \end{proof}
+    
+    \item The following is a proof that $\forall n \in \Z^{+}$, $$\frac{1}{2} \times \frac{3}{4} \times ... \times \frac{2n-1}{2n} \leq \frac{1}{\sqrt{3n}}$$
+    The product above may also be represented as $$\prod_{i=1}^{n}\frac{2i-1}{2i}$$ \\
+    We will prove a more stronger statement that the one given above i.e.,
+        \begin{align*}
+           \intertext{We know that: }
+            \sqrt{3n+1} &\geq \sqrt{3n} \\ 
+            \intertext{From which we can conclude:}
+            \frac{1}{\sqrt{3n+1}} &\leq \frac{1}{\sqrt{3n}} \\
+            \intertext{We will prove the following statement using induction:}
+            \forall n \in \Z^{+}, \prod_{i=1}^{n}\frac{2i-1}{2i} &\leq \frac{1}{\sqrt{3n+1}} \\
+        \end{align*}
+    \begin{proof}
+    Let $n \in \Z^{+}$
+    \begin{equation*}
+        \text{Let } P(n): \prod_{i=1}^{n}\frac{2i-1}{2i} \leq \frac{1}{\sqrt{3n+1}}
+    \end{equation*}
+        \textbf{Base Case: } Let $(n = 1)$
+        \begin{align*}
+            P(1): \prod_{i=1}^{1}\frac{2i-1}{2i} &= \frac{1}{2} \\ 
+            &\leq \frac{1}{\sqrt{3(1)+1}} = \frac{1}{2}
+        \end{align*}
+        therefore, the base case holds. \\
+        \textbf{Inductive step: } Let $k\in \Z^{+}$. Assume
+        $$P(k): \prod_{i=1}^{k}\frac{2i-1}{2i} \leq \frac{1}{\sqrt{3k+1}}$$ 
+        We will prove $P(k) \implies P(k+1)$ is True.
+        $$P(k+1):
+        \prod_{i=1}^{k+1}\frac{2i-1}{2i} \leq \frac{1}{\sqrt{3(k+1)+1}} = \frac{1}{\sqrt{3k+4}}$$ 
+        We know $k \geq 1$ implies $k \geq 0$
+        \begin{align*}
+            k &\geq 0 \\ 
+            20k - 19k &\geq 0 \\
+            20k &\geq 19k
+        \end{align*}
+        Adding $12k^{3}+28k^{2}+4$ to both sides of the inequality preserves the inequality since $k \geq 1$ 
+        \begin{align*}
+            12k^{3}+28k^{2}+20k+4 &\geq  12k^{3}+28k^{2}+19k+4 \\ 
+            (3k+1)(2k+2)^{2} &\geq (3k+4)(2k+1)^{2} \tag{by factoring each side}\\ 
+            \frac{1}{3k+4} &\geq \frac{(2k+1)^{2}}{(2k+2)^{2}} \cdot \frac{1}{3k+1}
+        \end{align*}
+        Taking square root of both sides preserves the inequality since both sides are $\geq 0$ 
+        \begin{align*}
+            \frac{1}{\sqrt{3(k+1)+1}} &\geq \frac{(2k+1)^{2}}{(2k+2)^{2}} \cdot \frac{1}{\sqrt{3k+1}} \\
+            &\geq \frac{(2k+1)^{2}}{(2k+2)^{2}} \cdot \prod_{i=1}^{k}\frac{2i-1}{2i} \tag{Using Induction Hypothesis} \\ 
+            &\geq \frac{(2(k+1)-1)^{2}}{(2(k+1))^{2}} \cdot \prod_{i=1}^{k}\frac{2i-1}{2i} \\
+            &\geq \prod_{i=1}^{k+1}\frac{2i-1}{2i} \tag{combining the terms into a single product}
+        \end{align*}
+        Therefore $P(k+1)$ is True, which makes our inductive step and by extension $$P(n): \prod_{i=1}^{n}\frac{2i-1}{2i} \leq \frac{1}{\sqrt{3n+1}}$$ True which implies that $$\prod_{i=1}^{n}\frac{2i-1}{2i} \leq \frac{1}{\sqrt{3n}}$$ is also True since $$\frac{1}{\sqrt{3n+1}} \leq \frac{1}{\sqrt{3n}}$$
+    \end{proof}
+\end{enumerate}
+
+\newpage
+\section{Working with Functions}
+    \setcounter{equation}{0}
+    \setcounter{case}{0}
+    The following definitions will be referenced in this section:
+    \begin{align}
+        \forall a_1, a_2 \in A, f(a_1) = f(a_2) \implies a_1 = a_2\tag{one-to-one}\\
+        \forall b \in B, \exists \in A, f(a) = b\tag{onto}\\
+        \forall a \in A, (g\circ f)(a) = g(f(a))\tag{composition}
+    \end{align}
+    
+    \begin{enumerate}
+        \item \textbf{Working with functions.}
+        \begin{enumerate}[i]
+            \item The following is the proof that $g_1: \Z \rightarrow \Z; g_1(x) = x-4$ is both one-to-one and onto:
+            \begin{proof}
+                First, we will prove that $g_1(x)$ is one-to-one, or that: \begin{align*}
+                    \forall p, q \in \Z, g_1(p) = g_1(q) \implies p = q
+                \end{align*} Let $p, q, \in \Z$. Assume $g_1(p) = g_1(q)$. We want to prove that $p=q$.
+                \begin{align*}
+                    g_1(p) &= g_1(q)\\
+                    p-4 &= q-4\\
+                    p &= q \tag{add 4 to both sides}
+                \end{align*}
+                Next, we will prove that $g_1$ is onto, or that:
+                \begin{align*}
+                    \forall b \in \Z, \exists a \in \Z, g_1(a) = b
+                \end{align*}Let $b \in \Z$. Let $a = b + 4$.
+                \begin{align*}
+                    b &= g_1(a)\\
+                    &= a - 4\\
+                    &= (b + 4) - 4\\
+                    &= b
+                \end{align*}
+            \end{proof}
+            \item The following is the proof that $g_2: \R \rightarrow \R; g_2(x) = |x| + x$ is neither one-to-one not onto:
+            \textbf{Proof that $g_2(x) = |x| + x$ is not one-to-one}
+            \begin{proof}
+                WTS: $\exists p, q \in \R, g_2(p) = g_2(q) \land p \neq q$
+                \begin{align*}
+                    \text{let } p &= -1 \text{ and } q = -2 \\
+                    p &\neq q \text{ is True} \\ 
+                    g_2(p) &= g_2(q) \\ 
+                    |-1| + (-1) &= |-2| + (-2) \\ 
+                    0 &= 0 \\
+                    \text{thus } g_2(p) &= g_2(q) \text{ is also True.}
+                \end{align*}
+            \end{proof}
+            \textbf{Proof that $g_2(x) = |x| + x$ is not onto}
+            \begin{proof}
+            WTS: $\exists b \in \R, \forall a \in \R, g_2(a) \neq b$  \\
+            \begin{itemize}
+                \item Let $b = -1$
+                \item Let $a \in \R$
+                \item WTS: $g_2(a) \neq b$
+                \item We will split the proof into two cases, namely $a > 0$ and $a \leq 0$ 
+            \end{itemize}
+                \begin{case} $a > 0$
+                \begin{align*}
+                    g_2(a) &= |a| + a \\
+                    &> 0 \neq -1 \tag{since both $|a|$ and $a > 0$} 
+                \end{align*}
+                \end{case}
+                \begin{case} $a \leq 0$ 
+                $$
+                g_{2}(a)=|a|+a
+                $$
+                In this case, since $a \leq 0$, we know $|a| \geq 0$ and that $-a=|a|  \quad($ since $a \leq 0)$.\\
+                Moreover, by using the fact that $|a|=-a$, we can conclude:
+                $$
+                \begin{aligned}
+                g_{2}(a)=|a|+a &=-a+a \\
+                &=0 \neq-1
+                \end{aligned}
+                $$
+                \end{case}
+            \end{proof}
+            \end{enumerate}
+        \item The following are definitions and proofs for the two functions: 
+        \begin{align}
+            f_1, f_2 : \Z \rightarrow \Z^+
+        \end{align}
+        such that:
+        \begin{enumerate}[i)]
+            \item $f_2$ is onto but not one-to-one.
+            
+            \textbf{Definition:} $f_2(x) = |x|$
+            \begin{proof}First, we will prove that $f_2$ is onto i.e., $\forall b \in \Z^+, \exists a \in \Z, f_2(a) = b$.
+            
+            Let $b \in \Z^{+}$. Let $a=b$. We want to prove that $f_2(a) = b$.
+            \begin{align*}
+                f_2(a) &= |a|\\
+                &= a\\
+                &= b
+            \end{align*}
+            \end{proof}
+            Next, we will prove that $f_2(x)$ is \textbf{not} one-to-one i.e., $\exists p, q, \in \Z, f_2(p) = f_2(q) \land p \neq q$. Let $p=3$ and $q=-3$.
+            \begin{proof}
+            \begin{align*}
+                f_{2}(p)=|3|=3=|-3|&=f_{2}(q)\\
+                \text{so } f_2(p) &= f_2(q) \text{ is True} \\
+                3 &\neq-3\\
+                p &\neq q \text{ is also True}
+            \end{align*}
+            \end{proof}
+            \item $f_1$ is one-to-one but not onto:\\
+            \textbf{Definition:} $f_1(x) = e^{x} + 2$\\
+            We will first prove that $f_1(x)$ is not onto i.e., $\exists b \in \Z^{+}, \forall a \in \Z, f_1(a) \neq b$
+            \begin{proof}: 
+            \begin{itemize}
+                \item Let $b=1$
+                \item Let $a \in \mathbb{Z}$
+                \item $\underline{\text {WTS}}: f_{1}(a) \neq 1 .$
+                \item We will split the proof into two cases, namely $a > 0$ and $a \leq 0$ 
+            \end{itemize}
+            \setcounter{case}{0}
+            \begin{case} $a>0$\\
+                    In this case, $e^{a}>1$ and $e^{a}+2>3 \neq 1$
+            \end{case} 
+            \begin{case}
+            $$
+            \begin{aligned}
+            a & \leq 0 \\
+            0<e^{a} & \leq 1 \implies 2<e^{a}+2 \leq 3 \\ 
+            e^{a}+2 &\neq 1
+            \end{aligned}
+            $$
+            \end{case}
+            Since in both cases, the least value of $f_{1}(a)$ is $\neq 1$, we can conclude that \\
+            $\forall a \in \mathbb{Z}, f_1(a) \neq 1$
+            \end{proof}
+            Next, we will prove that $f_1(a)$ is one-to-one
+            \begin{proof} WTS: $\forall p, q \in \Z, f_1(p) = f_1(q) \implies p = q$ \\ 
+            \begin{itemize}
+                \item let $p, q \in \Z$
+                \item Assume $f_1(p) = f_1(q)$
+                \item WTS: $p = q$
+            \end{itemize}
+            \begin{align*}
+                f_1(p) &= f_2(q) \\ 
+                e^{p}+2 &= e^{q}+2 \\ 
+                e^{p} &= e^{q} \tag{subtracting 2 from both sides} \\ 
+                \ln({e^{p}}) &= \ln({e^{q}}) \tag{Taking $\ln$ of both sides} \\ 
+                p \cdot \ln({e}) &= q \cdot \ln({e}) \\ 
+                p &= q \tag{dividing both sides by $\ln({e})$}
+            \end{align*}
+            \end{proof}
+        \end{enumerate}    
+        \item Let $f : A \rightarrow B$ and $g : B \rightarrow C$ be arbitrary functions.
+        \begin{enumerate}[i]
+            \item The following is a proof that if $g \circ f$ is one-to-one, then $f$ is also one-to-one:
+            \begin{proof} WTS: \\
+            $(\left. \forall a_1, a_2 \in A, (g \circ f)(a_1) = (g \circ f)(a_2) \implies (f(a_1) = f(a_2) \right.) \implies (\left. \forall p, q \in A, f(p) = f(q) \implies p = q \right.)$ \\
+            \begin{itemize}
+                \item Assume $g \circ f$ is one-to-one i.e., $(\left. \forall a_1, a_2 \in A, (g \circ f)(a_1) = (g \circ f)(a_2) \implies (f(a_1) = f(a_2) \right.)$
+                \item let $p, q \in A$
+                \item Assume $f(p) = f(q)$ 
+                \item WTS: $p = q$
+                \begin{align*}
+                    g(f(p)) &= g(f(q)) \\
+                    (g \circ f)(p) &= (g\circ f)(q) \tag{By definition of composite functions} \\
+                \end{align*}
+                \item Using our assumption that $g \circ f$ is one-to-one, we can conclude that:
+                \begin{align*}
+                    p &= q 
+                \end{align*}
+            \end{itemize}
+            \end{proof}
+            \item The following is a proof that if $g \circ f$ is onto, then $f$ is also onto:
+            \begin{proof} WTS: \\ 
+                $(\left. \forall c \in C, \exists a \in A, (g \circ f)(a) = c \right.) \implies (\left. \forall c \in C, \exists b \in B, g(b) = c \right.)$
+                \begin{itemize}
+                    \item Assume that $g \circ f$ is onto i.e., $(\left. \forall c \in C, \exists a \in A, (g \circ f)(a) = c \right.)$
+                    \item Let $c \in C$
+                    \item Let $b = f(a)$. Since $f(a) \in B$ according to the choice domain and co-domain of function $f$
+                    \item WTS: $g(b) = c_2$
+                    \begin{align*}
+                        g(b) &= g(f(a)) \\
+                        &= (g \circ f)(a) \tag{From the definition of function composition} \\
+                        &= c \tag{using assumption that $g \circ f$ is onto}
+                    \end{align*}
+                \end{itemize}
+            \end{proof}
+            \item The following is a proof that if $g \circ f$ is one-to-one and onto, then $f$ is also both one-to-one and onto:
+            \begin{itemize}
+                \item We will prove that the given statement is false by proving its  negation which states that:
+                 \begin{align*}
+                    \exists f: A \rightarrow B \text{ and } g: B \rightarrow C, \\
+                    ( \forall a_1, a_2 \in A, (g \circ f)(a_1) =  (g \circ f)(a_2) \implies a_1 = a_2 ) &\land (\forall c_1 \in C, \exists a \in A, (g\circ f)(a) = c_1)\\ 
+                    &\land \\ 
+                    ((\exists p,q \in A, f(p) = f(q) \implies p=q) &\lor (\exists b \in B, \forall a_3 \in A, f(a_3) \neq b) \\
+                    &\lor \\
+                    (\exists p_1, q_1 \in B, g(p_1) = g(q_1) \land p_1 \neq q_1) &\lor (\exists c_2 \in C, \forall b_1 \in B, g(b_10 \neq  c_2)) 
+                \end{align*} 
+                \end{itemize}
+            \begin{proof} $ $\newline
+    \begin{itemize} 
+    \item Let $A=[1,2,3]$
+    \item Let $B=[4,5,6,7]$
+    \item Let $C=[8,9,10]$ 
+\end{itemize}
+
+We define $f: A \rightarrow B, g: B \rightarrow C$, and $g \circ f: A \rightarrow C$ using the following table of values where $a \in A, b \in B$
+\begin{center}
+    $\quad$\begin{tabular}{|c|c|}
+\hline$b$ & $g(b)$ \\
+\hline 4 & 8 \\
+\hline 5 & 8 \\
+\hline 6 & 9 \\
+\hline 7 & 10 \\
+\hline
+\end{tabular} $\quad$\begin{tabular}{|c|c|}
+\hline$a$ & $f(a)$ \\
+\hline 1 & 5 \\
+\hline 2 & 6 \\
+\hline 3 & 7 \\
+\hline
+\end{tabular}$\quad$\begin{tabular}{|c|c|}
+\hline$a$ & $g(f(a))$ \\
+\hline 1 & 8 \\
+\hline 2 & 9 \\
+\hline 3 & 10 \\
+\hline
+\end{tabular} \\ 
+\end{center}
+At this point, we will prove that \textbf{$g \circ f$ is both one-to-one} and \textbf{onto} and that \textbf{$g$ is not one-to-one.}
+\\
+\textbf{Proof that $g \circ f$ is one-to-one i.e.,} $\left(\forall a_{1}, a_{2} \in A,(g \circ f)\left(a_{1}\right)=(g \circ f)\left(a_{2}\right) \rightarrow a_{1}=a_{2}\right)$:  
+
+Let $a_{1}, a_{2} \in A$ \\
+Assume $(g \circ f)\left(a_{1}\right)=(g \circ f)\left(a_{2}\right)$. \\
+WTS: $a_1 = a_2$ \\
+Since $(g \circ f)\left(a_{1}\right)$ can take on only 3 values, we will split the proof into 3 cases based on these values.
+\setcounter{case}{0}
+\begin{case}
+Let $(g \circ f)\left(a_{1}\right)=(g \circ f)\left(a_{2}\right)=8$ \\ 
+From our definition of $(g \circ f)$, this value is only possible when $a_{1}=a_{2}=1$
+\end{case}
+\begin{case}
+Let $(g \circ f)\left(a_{1}\right)=(g \circ f)\left(a_{2}\right)=9$ \\ 
+From our definition of $(g \circ f)$, this value is only possible when $a_{1}=a_{2}=2$
+\end{case}
+\begin{case}
+Let $(g \circ f)\left(a_{1}\right)=(g \circ f)\left(a_{2}\right)=10$ \\ 
+From our definition of $(g \circ f)$, this value is only possible when $a_{1}=a_{2}=3$
+\end{case}
+
+\textbf{Proof that $g \circ f$ is onto i.e.,} $\left(\forall c_{1} \in c, \exists a \in A,(g \circ f)(a)=c_{1}\right):$
+Let $c_1 \in C$ \\
+Let $a = c_1 - 7$. \\
+From our definition of $g \circ f$ in the table above, we can see that for any $c_{1}$ we pick from the set $C$, we can choose on $a$ which is 7 less than our chosen $c_{1}$ \\
+Since $c_1$ can take on only 3 values, we will split the proof into 3 cases based on these values. \\
+\setcounter{case}{0} 
+\begin{case}
+$\quad$ Let $c_{1}=8$.
+$$
+\begin{aligned}
+\text { Let } a &=c_{1}-7=1 \\
+\text { WTS: }(g \circ f)(a) &=c_{1} \\
+(g \circ f)(a) &=(g \circ f)(1) \\
+&=8 \\
+&=c_{1}
+\end{aligned}
+$$
+\end{case}
+\begin{case}
+$\quad$ Let $c_{1}=9$
+$$
+\text { Let } a=c_1-7=2
+$$
+$$
+\begin{aligned}
+\text { WTS: } (g \circ f)(a) &=c_{1} \\
+(g \circ f)(a) &=(g \circ f)(2) \\
+&=9 \\
+&=c_{1}
+\end{aligned}
+$$
+\end{case}
+
+\begin{case}
+$\quad$ Let $c_{1}=10$.
+$$
+\begin{aligned}
+\text { Let } c_{1} &=10 \\
+\text { Let } a &=c_{1}-7=3 \\
+\text { WTS: }(g \circ f)(a) &=c_{1} \\
+(g \circ f)(a) &=(g \circ f)(3) \\
+&=10 \\
+&=c_{1} 
+\end{aligned}
+$$
+\end{case}
+\textbf{Proof that $g$ is not one-to-one i.e.,} $\left(\exists p_{1}, q, \in B, g\left(p_{1}\right)=g\left(q_{1}\right) \wedge p_{1} \neq q_{1}\right)$ 
+
+Let $p_{1}=4$ and let $q_{1}=5$.
+$$
+\begin{aligned}
+&\text { WTS: } g\left(p_{1}\right)=g\left(q_{1}\right) \wedge p_{1} \neq q \\
+&4 \neq 5 \leftrightarrow p_{1} \neq q_{1} \\
+&g\left(p_{1}\right)=g(4) =8=g(5)=g\left(q_{1}\right)
+\end{aligned}
+$$
+            \end{proof}
+        \end{enumerate}
+    \end{enumerate}
+\end{document}

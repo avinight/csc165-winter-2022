@@ -1,0 +1,72 @@
+% Package providing macros and environments for LaTeX course materials
+% at the Department of Computer Science, University of Toronto.
+% Copyright 2021, Francois Pitt
+% Copyright 2013-2017, David Liu
+% Version 2.1, 9 January 2021
+
+% Package name
+\ProvidesPackage{csc}
+
+% Dependencies
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{amssymb}  % Required for "does not divide" symbol
+
+% TeX trick so that math symbols are bold when text is.
+\let\seiresfb\bfseries\def\bfseries{\boldmath\seiresfb}
+\let\seiresdm\mdseries\def\mdseries{\unboldmath\seiresdm}
+
+% LaTeX tries to embody the principle "write what you mean", as opposed to
+% "write what you want it to look like". For example, we write
+% \emph{emphasized text} instead of \textit{italics}, so that if we decide to
+% change how we want to represent emphasis, we only need to redefine \emph
+% instead of having to search-and-replace \textit everywhere (and tell the
+% difference between uses of \textit for emphasis vs uses of \textit for other
+% purposes).
+
+% General fonts and characters.
+\let\strong\textbf  % strong emphasis
+\let\code\texttt  % code fragments
+\let\pred\textsl  % predicate names
+
+% Semantic names for propositional connectives (and "logical True/False")
+% LaTeX already predefines
+% \lnot = logical not
+% \land = logical and
+% \lor = logical or
+\let\bigimplies\implies
+\renewcommand*\implies{\mathrel{\Rightarrow}}  % smaller than default
+\let\bigiff\iff
+\renewcommand*\iff{\mathrel{\Leftrightarrow}}  % smaller than default
+\newcommand{\True}{\texttt{True}}
+\newcommand{\False}{\texttt{False}}
+
+% Semantic name for a "divides" symbol.
+\newcommand{\DIV}{\mathrel\mid}
+\newcommand{\NDIV}{\mathrel\nmid}
+
+% modular arithmetic
+\newcommand{\MOD}{\pmod}
+
+% Number sets
+\newcommand{\N}{\mathbb N}        % Naturals
+\newcommand{\Z}{\mathbb Z}        % Integers
+\newcommand{\Q}{\mathbb Q}        % Rationals
+\newcommand{\R}{\mathbb R}        % Reals
+\newcommand{\bigO}{\mathcal O}    % Big-O
+\newcommand{\powset}{\mathcal P}  % Power set
+
+% Short forms for set notation
+\let\emptysetorig\emptyset
+\renewcommand*\emptyset{\varnothing}  % rounder than default
+
+% Math functions
+\newcommand{\floor}[1]{\left \lfloor #1 \right \rfloor}  % Floor function
+\newcommand{\ceil}[1]{\left \lceil #1 \right \rceil}     % Ceiling function
+\newcommand{\abs}[1]{\left | #1 \right |}                % Absolute value
+\DeclareMathOperator{\lcm}{lcm}                          % lcm
+
+% Macros for proofs
+\newcommand{\proofheader}[1]{\noindent \underline{\textbf{#1}}}
+\newcommand{\base}{\proofheader{Base Case}:}
+\newcommand{\istep}{\proofheader{Inductive Step}:}

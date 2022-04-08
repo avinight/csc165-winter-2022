@@ -1,0 +1,576 @@
+\documentclass[12pt]{article}
+
+
+
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[margin=2cm,headheight=3ex]{geometry}
+\usepackage{csc}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{csquotes}
+\usepackage[normalem]{ulem}
+\usepackage{enumerate}
+\renewcommand\labelenumi{(\alph{enumi})}
+
+% \newcommand{\R}{\mathbb{R}}
+% \newcommand{\N}{\mathbb{N}}
+% \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\T}{\True}
+\newcommand{\F}{\False}
+\theoremstyle{definition}
+\newtheorem{case}{Case}
+\newtheorem*{induction}{Induction}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{Junaid Arshad, Sadeed Ahmed, \& Frederick Meneses}}
+\rhead{\fancyplain{}{CSC165 - Problem Set 3}}
+
+% Document Metadata
+\title{CSC165 - Problem Set 3}
+\author{Junaid Arshad, Sadeed Ahmed, \& Frederick Meneses}
+\date{March 18, 2022}
+
+\begin{document}
+\maketitle
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~SECTION 1~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{Number Representation}
+
+\begin{enumerate}
+
+    \item Let $(b_{k-1}\dots b_0)_2$ be a binary representation of a natural number, and $a$ be a single bit. The following is a proof that $(b_{k-1}\dots b_0 a)_2 = 2(b_{k-1}\dots b_0)_2 + a$:
+    
+        \begin{proof}
+            Want to prove: $(b_{k-1}\ldots b_0a)_2 = 2(b_{k-1}\ldots b_0)_2 + a$.
+            Let $(b_{k-1}\ldots b_0)_2 = \sum_{i=0}^{k-1}b_i2^i$.
+            We will show the RHS = LHS.
+            Let $k' = k + 1$ and $b_0' = a$ and $\forall i \in \{1,2,\ldots,k\}$, $b_i' = b_{i-1}$
+            
+            \begin{align*}
+                2(b_{k-1}\ldots b_0)_2 + a &= \sum_{i=0}^{k-1}b_i2^{i+1} + a \\
+                &= \sum_{i=1}^{k}b_{i-1}2^{i} + a \\
+                &= \sum_{i=1}^{k'-1}b_{i}'2^{i} + a2^0 \tag{$2^0 = 1$}\\
+                &= \sum_{i=1}^{k'-1}b_{i}'2^{i} + b_0'2^0 \tag{$b_0' = a$}\\
+                &= \sum_{i=0}^{k'-1}b_{i}'2^{i} \\
+                &= (b_{k'-1}'...b_0')_2 \\ 
+                &= (b_{k}'....b_{1}'b_{0}')_2 = (b_{k-1}\ldots b_0a)_2
+            \end{align*}
+            
+        \end{proof}
+    
+    \item Let $n \in \N$ and let $(b_{2n-1}\dots b_0)_2$ be the binary representation of a natural number. The following is a proof by induction that $(b_{2n-1}\dots b_0)_2 - (b_1 b_0)_2 - (b_3 b_2)_2 - \dots - (b_{2n-1} b_{2n-2})_2$ is a multiple of 3:
+        
+        \begin{proof}
+            Let $n \in \N$ and $(b_{2n-1} b_{2n-2} \ldots b_0)_2 = \sum_{i=0}^{2n-1}b_i2^i$ be the binary representation of $n$.
+            Let $$P(n): \exists k \in \Z, (b_{2n-1} b_{2n-2} \ldots b_0)_2 - (b_1b_0)_2 - (b_3b_2)_2 - \ldots - (b_{2n-1}b_{2n-2})_2 = 3k$$ \\
+            \textbf{Base Case. }(n = 0)
+            In this case, the binary representation of $n$ is $$\sum_{i=0}^{-1}b_i2^i = 0 = ()_2$$
+            
+            We want to show, $P(0): \exists k_0 \in \Z, ()_2 - ()_2 - \ldots - ()_2 = 3k_0$
+            
+            Let $k_0 = 0$
+            $$()_2 - ()_2 - \ldots - ()_2 = 0 = 3(0) = 3k_0$$
+            
+            \textbf{Inductive Step. } WTS: $\forall m \in \N, P(m) \implies P(m+1)$ \\
+            \textbf{Inductive Hypothesis: } Assume $$P(m): \exists d \in \Z, (b_{2m-1} b_{2m-2} \ldots b_0)_2 - (b_1b_0)_2 - (b_3b_2)_2 - \ldots - (b_{2m-1}b_{2m-2})_2 = 3d$$ 
+            Explicitly, we want to show:
+            $$P(m+1): \exists d_2 \in \Z, (b_{2m+1} b_{2m} \ldots b_0)_2 - (b_1b_0)_2 - (b_3b_2)_2 - \ldots - (b_{2m-1}b_{2m-2})_2 - (b_{2m+1}b_{2m})_2 = 3d_2$$
+            We also know from the given hint that $$\forall m \in \N, \exists y \in \Z, 4^m - 1 = 3y $$
+            Let $d_2 = 2y \cdot b_{2m+1} + y \cdot b_{2m} + d$\\
+            We will show that the LHS = RHS.
+            \begin{align*}
+                &= (b_{2m+1} b_{2m} \ldots b_0)_2 - (b_1b_0)_2 - (b_3b_2)_2 - \ldots - (b_{2m-1}b_{2m-2})_2 - (b_{2m+1}b_{2m})_2 \\
+                &= \sum_{i=0}^{2m+1} b_i2^i - (b_1b_0)_2 - (b_3b_2)_2 - \ldots - (b_{2m-1}b_{2m-2})_2 - (b_{2m+1}b_{2m})_2 \\
+                &= \sum_{i=0}^{2m-1} b_i2^i + \sum_{i=2m}^{2m+1} b_i2^i  - (b_1b_0)_2 - (b_3b_2)_2 - \ldots - (b_{2m-1}b_{2m-2})_2 - (b_{2m+1}b_{2m})_2 \\
+                &= \bigg(\sum_{i=0}^{2m-1} b_i2^i - (b_1b_0)_2 - \ldots - (b_{2m-1}b_{2m-2})_2 \bigg) + \bigg(\sum_{i=2m}^{2m+1} b_i2^i   - (b_{2m+1}b_{2m})_2\bigg) \\
+                &= \big((b_{2m-1}b_{2m-2}\ldots b_0)_2 - (b_1b_0)_2 - \ldots - (b_{2m-1}b_{2m-2})_2\big) + \big(b_{2m+1} 2^{2m + 1} + b_{2m} 2^{2m} -  b_{2m+1} 2^{1} - b_{2m} 2^{0}\big) \\
+                &= 3d + \big(b_{2m+1}2^{2m+1} - b_{2m+1}2\big) + \big(b_{2m}2^{2m} - b_{2m}2^{0}\big) \tag{by Inductive Hypothesis} \\ 
+                % 2^{2m}(2^1b_{2m+1} + 2^0b_{2m}) + 3d - (b_{2m+1}b_{2m})_2 \tag{by Inductive Hypothesis}\\
+                &= 3d + 2b_{2m+1}(4^{m} - 1) + b_{2m} (4^m - 1)  \\
+                &= 3d + 2b_{2m+1}(3y) + b_{2m} (3y) \tag{using the given hint} \\
+                &= 3(d + 2y \cdot b_{2m+1} + y \cdot b_{2m}) \tag{Factoring out 3}\\
+                &= 3d_2
+            \end{align*}
+        \end{proof}
+    
+    \newcommand{\sm}[1]{\sum_{i=0}^{#1n-1}}
+    \newcommand{\fb}[1]{(b_{#1} \dots b_0)_2}
+    \newcommand{\mb}[2]{(b_{#1} b_{#2})_2}
+    \newcommand{\mbb}[4]{(b_#1 \cdot 2^#2 + b_#3 \cdot 2^#4)}
+    \item Let $x$ be a natural number with a binary representation where the difference between the number of 1 bits with an even index and the number of 1 bits with an odd index is a multiple of 3. The following is a proof that $x$ is a multiple of 3:
+        
+        \begin{proof}
+            Let $x \in \N$. The binary representation of $x$ can have an even \emph{or} odd number of bits.
+            If $x$ has an even number of bits, then its binary representation is of the form $(b_{2n-1} \dots b_0)_2$.
+            If $x$ has an odd number of bits, then we can add a leading zero, in which case its binary representation is also $(0 b_{2n-2} \dots b_0)_2$, which can be similarly be re-written as $(b_{2n-1} \dots b_0)_2$.
+            
+            Given that the binary representation of $x$ is $(b_{2n-1} \dots b_0)$, assume that the difference between the number of 1 bits with an even index and the number of 1 bits with an odd index is a multiple of 3, i.e.:
+            \begin{align*}
+                3 \DIV \bigg(\sm{}b_{2i} - \sm{}b_{2i+1} \bigg),
+            \end{align*}
+            or that:
+            \begin{align*}
+                \exists d_1 \in \Z,\ \sm{}b_{2i} - \sm{}b_{2i+1} = 3d_1.
+            \end{align*}
+            
+            From \textbf{Part B}, we know that:
+            \begin{align*}
+                \exists d_3 \in \Z, \fb{2n-1} - \mb{1}{0} - \mb{3}{2} - \dots \mb{2n-1}{2n-2} = 3d_3\\
+            \end{align*}
+            
+            \emph{Want to prove:} $\fb{2n-1}$ is divisible by 3, or that, $3 \DIV \sm{2} b_i2^i$, i.e.: 
+            \begin{gather*}
+                \exists d_2 \in \Z, \sm{2}b_i2^i=3d_2
+            \end{gather*}
+            
+            Let $d_2 = d_1 + d_3 + \sm{} b_{2i+1}$.
+            
+            \vspace{0.25cm}
+            
+            Using our result from \textbf{Part B}:
+            \begin{gather*}
+                \fb{2n-1} - \mb{1}{0} - \mb{3}{2} - \dots \mb{2n-1}{2n-2} = 3d_3\\
+                \fb{2n-1} - \mbb{1}{1}{0}{0} - \mbb{3}{1}{2}{0} - \dots - (b_{2n-1} \cdot 2^1 + b_{2n-2} \cdot 2^0) = 3d_3\\
+                \fb{2n-1} - (b_1 \cdot 2 + b_3 \cdot 2 + \dots + b_{2n-1} \cdot 2) - (b_0 \cdot 1 + b_2 \cdot 1 + \dots + b_{2n-2} \cdot 1) = 3d_3\\
+                \fb{2n-1} - 2(b_1 + b_3 + \dots + b_{2n-1}) - (b_0 + b_2 + \dots b_{2n-2}) = 3d_3\\
+                \fb{2n-1} + 2\sm{} b_{2i + 1} + \sm{} b_{2i} = 3d_3\\
+                \sm{2} b_i 2^i = 3d_3 + 2 \sm{} b_{2i+1} + \sm{} b_{2i}
+            \end{gather*}
+            
+            From our assumption, we know that:
+            \begin{gather*}
+                \sm{} b_{2i} - \sm{} b_{2i+1} = 3d_1 \iff \sm{} b_{2i} = 3d_1 + \sm{} b_{2i+1}
+            \end{gather*}
+            Plugging this value into our expression above:
+            \begin{align*}
+                \sm{2} b_i 2^i &= 3d_3 + 2 \sm{} b_{2i+1} + 3d_1 + \sm{} b_{2i+1}\\
+                &= 3d_3 + 3d_1 + 3 \sm{} b_{2i+1}\\
+                &= 3\bigg(d_3 + d_1 + \sm{} b_{2i+1}\bigg)\\
+                &= 3d_2
+            \end{align*}
+            \emph{Thus, we have proven that $\fb{2n-1}$ is divisible by 3, or that, $3 \DIV \sm{2} b_i2^i$ when the difference between the number of 1 bits with an even index and the number of 1 bits with an odd index is a multiple of 3.}
+        \end{proof}
+    
+\end{enumerate}
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~SECTION 2~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\newpage
+\section{Induction}
+\setcounter{equation}{0}
+For $m, n \in \Z^+$, define $P(m, n)$ to be:
+\begin{align*}
+    \text{the number of ways to write $n=x_1 + \dots + x_m$ with $x_1, \dots x_m \in \N$ is $\frac{(n+m-1)!}{n!(m-1)!}$}.
+\end{align*}
+
+\begin{enumerate}
+    \item We will prove the following statements:
+    
+    \begin{enumerate}[i]
+    
+        \item $\forall n \in \Z^+, P(1, n)$
+            \begin{proof}
+                Let $n \in \Z^+$. \textbf{WTS:} $P(1, n)$: The number of ways to write $n = x_{1} + \ldots + x_{m}$ with $x_1, \dots x_m \in \N$ when $ m = 1$ is 1 \\ 
+                Let $m = 1, n = n$. In this case, $x_m = x_1 = n$. Thus, we can see that the number of ways to write n is 1. We can also confirm this using the formula:
+                $$\frac{(n+1-1)!}{n!(1-1)!} = \frac{n!}{n!} = 1$$
+            \end{proof}
+        
+        \item $\forall m \in \Z^+, P(m, 1)$
+            \begin{proof}
+                Let $m \in \Z^+$. \textbf{WTS:} $P(m, 1)$: The number of ways to write $1 = x_1 + \cdots + x_m$ with $x_1, \ldots, x_m \in \N$ is m \\
+                Since $n = 1$ here, one of $x_1, \ldots, x_m \in \N$ must be 1 whereas every other digit must $ = 0$, thus there are $m$ ways to represent 1 this way since any one of the $m$ digits can take on the value 1 and all others must be $=0$. Conversely, if one of the $m$ digits is 1 and all the others are $0$, they must add up to $n = 1$. We can also show this using the given formula, \\
+                %Let $k \in \Z^+$ and assume that $1 \leq k \leq m$ \\
+                %Let $x_k = 1$ and let all other $x_i = 0$ where $i \in \Z^+$ and $1 \leq i \leq m$ and $i \neq k$ \\ 
+                %Since $k$ can take on any value between 1 and m inclusive, the number of ways to write $1$ with $x_1, \ldots, x_m \in \N$ is $m$. We can also very this using the given formula,
+                $$\frac{(1+m-1)!}{1!(m-1)!} = \frac{m!}{(m-1)!} = m$$
+                %'$1$' can be in any index once while 0's are in every other index.
+            \end{proof}
+            
+        \item $\forall m, n \in \Z^+, P(m+1, n) \land P(m, n+1) \implies P(m+1, n+1)$
+            \begin{proof}
+            Assume $P(m + 1,n)$: The number of ways to write $n = x_1 + x_2 + \cdots + x_{m+1}$ with $x_1, \dots x_{m+1} \in \N$ using $m+1$ terms is $$\frac{(n+m)!}{n!m!}$$ and assume $P(m, n+1)$: The number of ways to write $n + 1= x_1 + x_2 + \cdots + x_{m}$ with $x_1, \dots x_m \in \N$ with $m$ terms is $$\frac{(n + m)!}{(n+1)!(m-1)!}$$ \\
+            We want to show:$$P(m+1, n+1): \text{the number of ways to write } n + 1 = x_1 + x_2 + \cdots + x_{m+1}$$ $$ \text{ for some } x_1, x_2, \ldots, x_{m+1} \in \N \text{ is } = \frac{(n+1+m)!}{(n+1)!m!}$$ \\ 
+            Since $x_1$ is a natural number, we know $x_1 \geq 0 \leftrightarrow x_1 = 0 \lor x_1 \geq 1$. Using this we can split up our domain of $x_1$ into two independent parts. \\ 
+            \\ 
+            %This proof relies on our choices for $x_1 \in \N$, so we will break this proof into cases. 
+            \textbf{\underline{When $x_1 = 0$:}} \\ 
+            Starting with the LHS of \textbf{WTS:} \\ 
+            $n + 1 = x_1 + x_2 + \cdots + x_{m+1}$ \\
+            Define $x_i'$ such that $x_i' = x_{i+1}$ for $1 \leq i \leq m$.
+            $$n + 1 = 0 + x_2 + \cdots + x_{m+1} = x'_1 + x'_2 + \cdots + x'_m$$
+            Since there are $m$ terms in this equation, by our assumption that $P(m, n + 1)$ is True the number of ways to write $n + 1$ with $m$ terms is $$\frac{(n + m)!}{(n+1)!(m-1)!}$$
+            \textbf{\underline{When $x_1 \geq 1$:}} \\
+            In this situation, we consider what we want to prove:
+            \begin{align*}
+                n + 1 &= x_1 + x_2 + \cdots + x_{m+1}\\
+                n &= x_1 - 1 + x_2 + \cdots + x_{m+1} \tag{subtracting 1 from both sides} \\
+                n &= (x_1 - 1) + x_2 + \cdots + x_{m+1} 
+            \end{align*}
+            We know: $x_1 \geq 1 \leftrightarrow x_1 - 1 \geq 0 \text{ } (\in \N)$  \\
+            We then define $x_1'' = x_1 - 1$ and $x_i''$ such that $x_i'' = x_{i}$ for $2 \leq i \leq m+1$. Then, we have the equation
+            $$n = x_1' + x_2' + \cdots + x_{m+1}'$$
+            Since there are $m+1$ terms in this equation, by our assumption that $P(m+1, n)$ is True, the number of ways to write $n$ using $m+1$ terms is: 
+            $$\frac{(n+m)!}{n!m!}$$
+            
+            Therefore, the total number of solutions we have for the equation $n+1 = x_1 + x_2 + \cdots + x_{m+1}$ when $x_1 \geq 0$ will be the sum of the solutions to the same equation when $x_1 =0$ and when $x_1 \geq 1$
+            \begin{align*}
+                P(m, n + 1) + P(m + 1, n)
+                &= \frac{(n + m)!}{(n+1)!(m-1)!} + \frac{(n+m)!}{n!m!}\\
+                &= \frac{(n+1)(n + m)! + m(n + m)!}{(n+1)n!m(m-1)!} \\
+                &= \frac{(n+1+m)(n + m)!}{(n+1)!m!} \\
+                &= \frac{(n+1+m)!}{(n+1)!m!} \\
+                &= P(m + 1, n + 1)
+            \end{align*}
+            Which is exactly what we wanted to show.
+            \end{proof}
+        
+    \end{enumerate}
+    
+    \item We will use the results from part (a) to prove $P(2,2) \land P(3, 3)$.
+        \begin{proof}
+            From part $a$ we know that $\forall n \in Z^+, P(1, n)$ and  $\forall n \in \Z^+, P(m, 1)$ are True. Using these two facts, we know that the following are true: 
+            \begin{itemize}
+                \item $P(1, 2)$
+                \item $P(1, 3)$
+                \item $P(2, 1)$
+            \end{itemize}
+            %Thus we take n = 2 to conclude $P(1, 2)$ is \texttt{True}.\\
+            % From ii) we know that $\forall n \in \Z^+, P(m, 1)$. Thus we take m = 2 to conclude $P(2, 1)$ is \texttt{True}.\\
+            From iii) we know that $\forall m, n \in \Z^+, P(m+1, n) \land P(m, n+1) \implies P(m+1, n+1)$. Using this and the true statements from above we can conclude the following: \\ 
+            \begin{align*}
+                P(1, 2) \land P(2, 1) \implies P(2, 2) \\
+                P(3, 1) \land P(2, 2) \implies P(3, 2) \\ 
+                P(2, 2) \land P(1, 3) \implies P(2, 3) \\ 
+                P(3, 2) \land P(2, 3) \implies P(3, 3) \\
+            \end{align*}
+            %Since $P(1, 2)$ and $P(2, 1)$ are both \texttt{True}, we can conclude that so is $P(2, 2)$.
+            %\\  
+            %Without loss of generality, 
+            %we may conclude $P(1, 3)$ and $P(3, 1)$ are \texttt{True}. Hence, $P(3, 3)$ is True.
+            Thus, $P(3, 3)$ is also True. This completes the proof.
+        \end{proof}
+    
+    \item For $t \in \Z^+$ with $t \geq 2$, define $Q(t)$ to be: $\forall m, n \in \Z^+, m + n = t \implies P(m, n)$. We will prove the following by induction: $\forall t \in \Z^+, t \geq 2 \implies Q(t)$.
+        \begin{proof} 
+            \textbf{Base Case. }(t = 2)  \\ 
+            The only possible values that $m$ and $n$ can have in this case are $m = 1$ and $n = 1$. We know that $P(1, 1)$ is $\True$ using our results from \textbf{(1.a.i)} \\
+            \\ 
+            \textbf{Inductive Step. }Let $t_1 \in \N$. Assume $t_1 \geq 2$ and also assume $Q(t_1)$: $\forall m_1, n_1 \in \Z^+, m_1 + n_1 = t_1 \implies P(m_1, n_1)$ \\
+            \textit{WTS:} $Q(t_1 + 1)$: $\forall m_2, n_2 \in \Z^+, m_2 + n_2 = t_1 + 1 \implies P(m_2, n_2)$ 
+            \begin{itemize}
+                \item Let $m_2, n_2 \in \Z^+$
+                \item Assume $m_2 + n_2 = t_1 \leftrightarrow m_2 +n_2 -1  = t_1$. \item Since by our assumption, $t_1 \geq 2$, the values that $m_2$ and $n_2$ can take on can be split up into 3 cases 
+                \case{$m_2 = 1 (\in \Z^+)$} \\ 
+                Since this is the smallest value that $m_2$ can have, in this case for the expression $m_2 + n_2 - 1$ to be equal to $t_1$, it must stand that $n_2\geq 2$.
+                
+                Since $m_2 = 1$ and $n_2 \in \Z^+$, we know from \textbf{(2.a.i)} that $P(m_2, n_2) = P(1, n_2)$ is \True.
+                
+                \case{$n_2 = 1 (\in \Z^+)$} \\ 
+                Since this is the smallest value that $n_2$ can have, in this case for the expression $m_2 + n_2 - 1$ to be equal to $t_1$, it must stand that $m_2 \geq 2$.
+                Thus, we have that $n_2 = 1$ and $m_2 \geq 2$ in this case.
+                
+                Since $n_2 = 1$ and $m_2 \in \Z^+$, we know from \textbf{(2.a.ii)} that $P(m_2, n_2) = P(m_2, 1)$ is \True.
+                
+                \case{$n_2 > 1 \land m_2 > 1$}
+                In this case, the following statements are $\True$ using the induction hypothesis:
+                \begin{align*}
+                    m_2 + (n_2 - 1) = t_1 \implies P(m_1, n_1 - 1) \tag{$m_2, (n_2-1) \in \Z^+$}\\
+                    (m_2 - 1) + n_2 = t_1 \implies P(m_2, n_2 - 1) \tag{$(m_2-1), n_2 \in \Z^+$} \\
+                \end{align*}
+                Since both of these expressions are $\True$ in this case, by \textbf{(2.a.iii)}, we can conclude that:
+                \begin{align*}
+                    P(m_2 - 1, n_2) \land P(m_2, n_2 - 1) \implies P(m_2, n_2)
+                \end{align*}
+            \end{itemize}
+            %\emph{Thus, we have proven that $t \geq 2$ is $\True$, then $Q(t)$ is also $\True$.}
+        \end{proof}
+    \item We will use the results from previous parts to prove $\forall m, n \in \Z^+, P(m, n)$.
+        \begin{proof}
+            Let $m, n \in \Z^+$.
+            %Choose $t = m + n$. Since $m \geq 1 \land n \geq 1$, $t \geq 2$. Hence by 2c, we conclude Q(t). That is, $\forall m, n \in \Z^+, m + b = t \implies P(m, n)$, which is what we wanted to show.
+            We know that $m + n \geq 2$, and from \textbf{(2.c)}, we know that this implies $Q(m+n)$, i.e.:
+            \begin{align*}
+                \forall m', n' \in \Z^+, m' + n' = m + n \implies P(m', n')
+            \end{align*} 
+            Consider the instance when $m' = n \land n' = n$. In this case, $P(m', n') = P(m, n)$, which is what we wanted to prove.
+        \end{proof}
+\end{enumerate}
+
+\newpage
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~SECTION 3~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{Asymptotic Notation}
+%~~~~~~~~~~~~~~~~~~~~~~VARIABLE DEFINITION~~~~~~~~~~~~~~~~~~~~~~%
+\newcommand{\nn}{\ceil{\frac{1 + \sqrt{1 + 4k}}{2}}}
+\newcommand{\nnf}{\frac{1 + \sqrt{1 + 4k}}{2}}
+\newcommand{\nnfs}{\frac{1 - \sqrt{1 + 4k}}{2}}
+\newcommand{\nnsq}{\sqrt{1 + 4k}}
+\newcommand{\nnsqs}{\sqrt{1 - 4k}}
+
+The following facts may be referenced in this section:
+\begin{align*}
+    &\forall n \in \Z, n \leq 2^n \tag{\textbf{Fact 1}}\\
+    &\forall x, y \in \R^+, x \leq y \iff log_2(x) \leq log_2(y) \tag{\textbf{Fact 2}}\\
+    &\forall x, y \in \R, x \leq y \iff 2^x \leq 2^y \tag{\textbf{Fact 3}}
+\end{align*}
+
+\begin{enumerate}
+
+    \item We will \textbf{prove} that $log_2(k+n) \in \bigO(log_2 n)$, or that:
+    \begin{align*}
+        \exists c, n_0 \in \R^+, \forall n \in \N, n \geq n_0 \implies \log_2(k+n) \leq c \cdot \log_2(n)
+    \end{align*}
+        \begin{proof}
+            Let $k$ be an arbitrary $\R^+$. 
+            Let $c = 2$, where $c \in \R^+$. 
+            Let $n_0 = \nn$, where $n_0 \in \R^+$.
+            
+            Assume that $n \geq n_0 \iff n \geq \nn$
+            
+            \emph{Want to prove:} $\log_2(k+n) \leq \log_2(n^2)$.
+            
+            Since $k > 0$,
+            \begin{align*}
+                k&>0\\[1ex]
+                1 + 4k &> 1\\[1ex]
+                \nnsq &> 1\\[1ex]
+                1 - \nnsq &< 0\\[1ex]
+                \nnfs &< 0\tag{\textbf{4}}
+            \end{align*}
+            We also know that:
+            \begin{align*}
+                \nnf > \nnfs
+            \end{align*}
+            
+            Using our assumption and \textbf{(4)}, we can conclude following:
+            \begin{align*}
+                n - \bigg(\nnf\bigg) &> 0\\[1ex]
+                n - \bigg(\nnfs\bigg) &> 0
+            \end{align*}
+            
+            Moreover, since the aforementioned terms are greater than 0, we can perform the following arithmetic:
+            \begin{align*}
+                \bigg(n - \bigg(\nnf\bigg) \bigg) \cdot \bigg(n - \bigg(\nnfs\bigg) \bigg) &\geq 0\\[1ex]
+                n^2 - n \cdot \bigg(\nnfs\bigg) - n \cdot \bigg(\nnf\bigg) + \bigg(\nnf\bigg) \cdot \bigg(\nnfs\bigg) &\geq 0\\[1ex]
+                n^2 + \frac{-n + n \cdot \nnsq - n - n \cdot \nnsq}{2} + \frac{1^2 - (\nnsq)^2}{4} &\geq 0\\[1ex]
+                n^2 - \frac{2n}{2} + \frac{1 - 1 - 4k}{4} &\geq 0\\[1ex]
+                n^2 - n - k &\geq 0\\[1ex]
+                n^2 - n - k &\geq 0\\[1ex]
+                n^2 &\geq n + k
+            \end{align*}
+            Using \textbf{Fact (2)}, we can also conclude that:
+            \begin{align*}
+                %n^2 &\geq n + k \iff \log_2(n^2) \geq \log_2(n+k)\\
+                n^2 \geq n + k &\iff \log_2(n+k) \leq \log_2(n^2) \\
+                &\iff \log_2(n+k) \leq 2 \cdot \log_2(n) \\
+                &\iff \log_2(n+k) \leq c \cdot \log_2(n) \\
+            \end{align*}
+            \emph{Thus, we have proven that:  $\log_2(k+n) \leq \log_2(n^2)$.}
+        \end{proof}
+    %~~~~~~~~~~~~~~~~~~~~~~VARIABLE DEFINITION~~~~~~~~~~~~~~~~~~~~~~%
+    \newcommand{\e}{\epsilon}
+    \newcommand{\bbn}{\ceil{\frac{1}{c^{\frac{1}{\e}}}+ n_0 + 1}}
+    \newcommand{\bb}{\frac{1}{c^{\frac{1}{\e}}}}
+     
+    \item We will \textbf{disprove} that $n \in \Omega(n^{1+\e})$, or that: 
+        \begin{align*}
+            \forall c, n_0 \in \R^+, \exists n \in \N, n \geq n_0 \land n < c \cdot n^{1 + \e}
+        \end{align*}
+        \begin{proof}
+            Let $\e, c, n_0 \in \R^+$.
+            Let $n = \bbn \in \N$.
+            
+            \emph{Want to prove: }$n \geq n_0$ and that $c < c \cdot n^{1 + \e}$.
+            
+            \proofheader{Part 1:} We will prove that $n \geq n_0$.
+            
+            Since our choice of $n$ depends on $\bb$, we will show that $\bb > 0$:
+            \begin{align*}
+                \e &> 0\\
+                \frac{1}{\e} &> 0\\
+                c^{\frac{1}{\e}} &> 1\\
+                0 < \bb &< 1
+            \end{align*}
+            \emph{Thus, since $n$ is the ceiling of the sum of positive real numbers (including $n_0$), we can conclude that $n \geq n_0$.}
+            
+            \newpage
+            
+            \proofheader{Part 2:} We will prove that $n < c \cdot n^{1 + \e}$.
+            
+            % PROVE THAT c/ne IS POSITIVE REAL
+            Before continuing with the proof, we will prove that $\frac{c}{n^\e}$ is a positive real number. Since $\e$ is a positive real number, we can perform the following arithmetic operations:
+            \begin{align*}
+                \e &> 0\\
+                n^\e &> 1\\
+                0 < \frac{1}{n^\e} &< 1 \tag{\textbf{6}}
+            \end{align*}
+            Moreover, since $c$ is a positive real number and \textbf{(6)} is True, we can conclude that $\frac{c}{n^\e} > 0$.
+            
+            By our choice of $n$, and from our conclusion in \textbf{part 1} that $n$ consists of positive terms \big(including $\bb$\big), we can perform the following arithmetic operations:
+            \begin{align*}
+                n &> \bb\\[1ex]
+                n^\e &> \frac{1}{c} \tag{raise inequality to the power of $\e$}\\
+                c &> \frac{1}{n^\e} \tag{multiply by $\frac{c}{n^\e} > 0$}\\
+                c &> n^{-\e} \\
+                c &> n^{1 - 1 - \e}\\
+                c &> n^{1 - (1 + \e)}\\
+                c &> \frac{n}{n^{1 + \e}}\\
+                c \cdot n^{1 + \e} &> n \tag{since $n^{1 + \e} > 0$}\\
+            \end{align*}
+            
+            \emph{Thus, we have proven that $n \geq n_0$ and that $n < c \cdot n^{1 + \e}$.}
+        \end{proof}
+        
+\end{enumerate}
+
+\newpage
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~SECTION 4~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{More Asymptotic Notations}
+
+    \begin{enumerate}
+        \item We will \textbf{prove} that if $f + g \in \mathcal{O}(h)$, then $f \in \mathcal{O}(h)$ and $g \in \mathcal{O}(h)$.
+            
+            \begin{proof}
+                Let $f, g, h : \N \xrightarrow{} \R^{\geq 0}$.
+                Assume that $f + g \in \bigO (h)$, or that:
+                \begin{align*}
+                    \exists c_0, n_0 \in \R^+, \forall n \in \N, n \geq n_0 \implies (f+g)(n) \leq c \cdot h(n)
+                \end{align*}
+                
+                We know that the definition of the sum of $f$ and $g$ is:
+                \begin{align*}
+                    \forall n \in \N, (f + g)(n) = f(n) + g(n)
+                \end{align*}
+                
+                \emph{Want to prove:} 
+                
+                \textbf{$f \in \bigO(h)$:} $\exists c_1, n_1 \in \R^+, \forall n \in \N, n \geq n_1 \implies f(n) \leq c_1 \cdot h(n)$
+                
+                \textit{and}
+                
+                \textbf{$g \in \bigO(h)$:} $\exists c_2, n_2 \in \R^+, \forall n \in \N, n \geq n_2 \implies g(n) \leq c_2 \cdot h(n)$
+                
+                \vspace{0.25cm}
+                \proofheader{Proof that $f \in \bigO(h)$}, i.e., $\exists c_1, n_1 \in \R^+, \forall n \in \N, f(n) \leq c_1 \cdot h(n)$.
+                
+                From our assumption, we know that $f(n) + g(n) \leq c_0 \cdot h(n)$.
+                
+                Let $c_1 = c_0$.
+                Let $n_1 = n_0$.
+                Let $n \in \N$.
+                
+                Since $n \geq n_1 = n_0$, using our assumption we know that $f(n) + g(n) \leq c_0 \cdot h(n)$.
+                
+                Since $g(n) \in \R^{\geq 0}$ (by the definition of the function), we know that if we subtract $g(n)$ from the left side, it would become even smaller and the inequality would still hold, i.e.:
+                \begin{align*}
+                    f(n) + g(n) \leq& c_0 \cdot h(n)\\
+                    f(n) \leq& c_0 \cdot h(n) \tag{subtract $g(n)$ from the left side}\\
+                    f(n) \leq& c_1 \cdot h(n) \tag{since $c_1 = c_0$}
+                \end{align*}
+                
+                \vspace{0.25cm}
+                \proofheader{Proof that $g \in \bigO(h)$}, i.e., $\exists c_2, n_2 \in \R^+, \forall n \in \N, g(n) \leq c_2 \cdot h(n)$.
+                
+                From our assumption, we know that $f(n) + g(n) \leq c_0 \cdot h(n)$.
+                
+                Let $c_2 = c_0$.
+                Let $n_2 = n_0$.
+                Let $n \in \N$.
+                
+                Since $n \geq n_2 = n_0$, using our assumption, we know that $f(n) + g(n) \leq c_0 \cdot h(n)$.
+                Since $f(n) \in \R^{\geq 0}$ (by the definition of the function), we know that if we subtract $f(n)$ from the left side, it would become even smaller and the inequality would still hold, i.e.:
+                \begin{align*}
+                    f(n) + g(n) \leq& c_0 \cdot h(n)\\
+                    g(n) \leq& c_0 \cdot h(n) \tag{subtract $f(n)$ from the left side}\\
+                    g(n) \leq& c_1 \cdot h(n) \tag{since $c_1 = c_0$}
+                \end{align*}
+                
+                \emph{Thus, we have proven that $f(n) \leq c_1 \cdot h(n)$ and $g(n) \leq c_2 \cdot h(n)$.}
+            \end{proof}
+        
+        \newpage    
+        \item For all functions $f, g: \N \xrightarrow{} \R^{\geq 0}$, we define the \textit{product function} $f \cdot g : \N \xrightarrow{} \R^{\geq 0}$ as follows:
+            \begin{align*}
+                \forall n \in \N, (f \cdot g)(n) = f(n) \cdot g(n).
+            \end{align*}
+        Let $f, g, h: \N \xrightarrow{} \R^{\geq 0}$. 
+        We will \textbf{disprove} that if $f \cdot g \in \bigO(h)$, then $f \in \bigO(h)$ and $g \in \bigO(h)$.
+        
+        \vspace{0.25cm}
+        \emph{Want to prove:} $\exists f, g, h : \N \xrightarrow{} \R^{\geq 0}, f \cdot g \in \bigO (h) \land \big(f \notin \bigO(h) \lor g \notin \bigO(h)\big)$
+        
+            \begin{proof}
+                Let $n \in \N$.
+                Let $g(n) = n^2$.
+                Let $h(n) = n$.
+                Let $f(n)$ be the piece-wise function defined by:
+                \[   \left\{
+                \begin{array}{ll}
+                      f(n) = 0 & \text{when } n = 0 \\
+                      f(n) = \frac{1}{n} & \text{when }n \geq 1 \\
+                \end{array} 
+                \right. \]
+                
+                \emph{Want to prove:} $f \cdot g \in \bigO (h) \land \big(f \notin \bigO(h) \lor g \notin \bigO(h)\big)$
+                
+                \vspace{0.25cm}
+                \proofheader{Proof that $f \cdot g \in \bigO(h)$}, i.e., $\exists c_0, n_0 \in \R^+, \forall n \in \N, n \geq n_0 \implies (f \cdot g)(n) \leq c_0 \cdot h(n)$.
+                
+                By definition of product functions, we know $(f \cdot g)(n) = f(n) \cdot g(n)$.
+                
+                Let $c_0 = 1$.
+                Let $n_0 = 1$.
+                Let $n \in \N$.
+                
+                From our assumption that $n \geq n_0$, we can infer the following:
+                \begin{flalign*}
+                    n &\geq 1\\[1ex]
+                    \iff 0 < \frac{1}{n} &\leq 1 \tag{\textbf{1}}\\[1ex]
+                    \text{Moreover, from our assumption:}&&\\
+                    n^2 &\geq 1 > 0 \tag{\textbf{2}}
+                \end{flalign*}
+                
+                We can then conclude the following:
+                \begin{align*}
+                    f(n) \cdot g(n) = \frac{1}{n} \cdot n^2 \geq 0 \tag{using \textbf{(1)} and \textbf{(2)}}
+                \end{align*}
+                \emph{Want to prove:} $f(n) \cdot g(n) \leq c_0 \cdot h(n)$.
+                
+                We can perform arithmetic operations on the product functions to prove this:
+                \begin{align*}
+                    f(n) \cdot g(n) &= \frac{1}{n} \cdot n^2\\
+                    &= 1\cdot n^{2 - 1}\\
+                    &= n\\
+                    &\leq 1 \cdot n\\
+                    &=c_0 \cdot h(n) \tag{from our choice of $c_0$ and $h(n)$}
+                \end{align*}
+                
+                \proofheader{Proof that $f \notin \bigO(h) \lor g \notin \bigO(h)$:}
+                
+                \emph{Want to prove:} $g \notin \bigO (h)$, i.e.,
+                \begin{align*}
+                    \forall c_1, n_1 \in \R^+, \exists n \in \N, n \geq n_1 \land g(n) \geq c_{1} \cdot h(n)
+                \end{align*}
+                Let $c_1, n_1 \in \R^+$.
+                Let $n = \ceil{c_1 + n_1 + 1}$, where $n \in \N$.
+                
+                \emph{Want to prove:} $n \geq n_1 \land g(n) \geq c_1 \cdot h(n)$.
+                
+                By our choice of $n$, we know that $n \geq n_1$ is $True$.
+                
+                By our choice of $n$, we also know the following:
+                \begin{align*}
+                    c_1 &\leq n\\
+                    c_1 \cdot n &\leq n^2\\
+                    c_1 \cdot h(n) &\leq g(n)
+                \end{align*}
+                \emph{Thus, we have proven that $f \cdot g \in \bigO(h)$ and that $g \notin \bigO (h)$.}
+            \end{proof}
+    \end{enumerate}
+\end{document}
