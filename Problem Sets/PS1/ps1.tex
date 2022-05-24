@@ -1,0 +1,116 @@
+\documentclass[12pt]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{xcolor}
+% \pagecolor[rgb]{0,0,0} %black
+% \color[rgb]{1.0,1.0,1.0} %grey
+\usepackage{amssymb}
+
+\begin{document}
+
+{\large 
+    \begin{center}
+        {\bf CSC165 : Mathematical Expression and Reasoning for Computer Science}\\
+        {\bf Frederick Meneses, Refia Gunes, Navjot Singh}
+    \end{center}
+}
+
+\section{Problem 1}
+\begin{itemize}
+    \item[1a)] 
+    \begin{align*}
+        p \implies \lnot q &\equiv \lnot p \lor \lnot q &\text{(implication)}\\
+        &\equiv \lnot q \lor \lnot p  &\text{(commutative)}\\
+        &\equiv q \implies \lnot p &\text{(implication)}
+    \end{align*}
+    \item[1b)] 
+    \begin{align*}
+        (p \land q) \implies r &\equiv \lnot(p \land q) \lor r &\text{(implication)} \\
+        &\equiv \lnot p \lor \lnot q \lor r &\text{(De Morgan's law)} \\
+        &\equiv \lnot p \lor (q \implies r) &\text{(implication)} \\
+        &\equiv p \implies (q \implies r) &\text{(implication)}
+    \end{align*}
+    \item[1c)]
+    \begin{align*}
+        (p \lor q) \implies r &\equiv \lnot (p \lor q) \lor r &\text{(implication)}
+        \\ &\equiv \lnot p \land \lnot q \lor r &\text{(De Morgan's law)}
+        \\ &\equiv (\lnot p \land \lnot q) \lor r &\text{(associative)}
+        \\ &\equiv r \lor (\lnot p \land \lnot q) &\text{(commutative)}
+        \\ &\equiv (r \lor \lnot p) \land (r \lor \lnot q) &\text{(distributive)}
+        \\ &\equiv (\lnot p \lor r) \land (\lnot q \lor r) &\text{(commutative)}
+        \\ &\equiv (p \implies r) \land (q \implies r) &\text{(implication)}
+        \end{align*}
+    \item[1d)]
+    $$\begin{array}{|c|c|c|c|}
+        \hline
+         p & q & r & (p \implies q) \implies r\\
+         \hline
+         F & F & F & F \\
+         \hline
+         F & F & T & T\\
+         \hline
+         F & T & F & F\\
+         \hline
+         F & T & T & T\\
+         \hline
+         T & F & F & T \\
+         \hline
+         T & F & T & T\\
+         \hline
+         T & T & F & F\\
+         \hline
+         T & T & T & T\\
+         \hline
+    \end{array}$$
+    The setting $p = F, q = F, r = F$ for the expression $(p \implies q) \implies r$ is different from every other expression, since both $(( p \land q) \implies r) = T$ and $((p \lor q) \implies r) = T$ (the other two expressions are logically equivalent to one of these expressions).
+\end{itemize}
+
+\newpage
+\section{Problem 2}
+
+\begin{enumerate}
+    \item[2a)] $$\forall d \in D, Holiday(d) \implies Weather(d, \text{windy})$$
+    \item[2b)] $$ \exists c_1, c_2 \in C, c_1 \neq c_2 \land (\exists d \in D,
+    Weather(d, c_1) \land Weather(d, c_2))$$
+    \item[2c)] $$\forall d \in D, \exists c \in C, \lnot Weather(d, c)$$
+    \item[2d)] $$\forall d_1, d_2, d_3 \in D, (Weather(d_1, \text{snowy}) \land Weather(d_2, \text{snowy}) \land Weather(d_3, \text{snowy}) \implies$$ $$d_1 = d_3 \lor d_2 = d_3)$$
+    \item[2e)] $$\exists d \in D, Weekend(d) \land ((Weather(d, \text{rainy}) \land \lnot Weather(d, \text{sunny}))$$ $$\lor (Weather(d, \text{sunny}) \land \lnot Weather(d, \text{rainy})))$$
+    \item[2f)] $$\forall d \in D, Weather(d, \text{snowy}) \land Weather(d, \text{rainy}) \implies \lnot Holiday(d)$$
+    \item[2g)] $$\exists c \in C, (\forall d \in D, Weekend(d) \implies Weather(d, c))$$
+    \item[2h)] $$\forall c \in C, (\exists d \in D, Holiday(d) \land Weather(d, c))$$
+\end{enumerate}
+
+\newpage
+\section{Problem 3}
+\begin{itemize}
+    \item[3a)]It is possible by focusing on the hypothesis. \\
+    Breaking up statement (6) and applying $\forall y \in S$ to the implication $P(y) \implies Q(x)$ means that not every $y$ satisfies $P(y)$ or there is at least one $y$ that does not satisfy $P(y)$, but not every $y$ satisfies $\lnot P(y)$ so there must exist a $y$ that does satisfy $P(y)$, hence defining a hypothesis for a subset of inputs $y$ such that $P(y) = True$, will also create a subset of inputs $y$ such that $P(y) = False$. A predicate $Q$ can then be defined such that its output is False, which makes (6) a false statement.
+    \newline
+    
+    The hypothesis of the statement (7) is (If $\forall y \in S, P(y)$), meaning that every $y$ must satisfy the predicate $P(y)$. If there is at least one $y$ that does not satisfy $P(y)$, then the hypothesis is false. Since the hypothesis $\forall y \in S, P(y)$ is a false statement, (7) is vacuously true regardless of the conclusion's truth value. \\
+    For example, $$S = \mathbb{Z}$$
+    $$T = \{x \in \mathbb{Z} \mid x \geq 0\}$$ 
+    $$P(u) : u \mid 5, u \in \mathbb{Z}$$ 
+    $$Q(u) : u < 0, u \in \mathbb{Z}$$
+    
+    Then, $\forall y \in S, \exists x \in T, (y \mid 5 \implies x < 0)$ is false \\
+    and $(\forall y \in S, y \mid 5) \implies (\exists x \in T, x < 0)$ is vacuously true.
+    \item[3b]It is impossible by focusing on the conclusion. \\
+    Breaking up statement (6) and applying $\exists x \in T$ to the implication $P(y) \implies Q(x)$ is equivalent to saying $\exists x \in T, P(y) \land Q(x)$ assuming $P(y)$ is true ($P(y)$ being false means the statement is vacuously true, which is not equivalent. These vacuous cases ; $Q(x)$ can be either true or false). 
+    Notice that by specialization in (6), we can conclude (7). In particular, the conclusion in (6) is True if and only if the one in (7) is True. Thus, the predicate $Q$ in both statements cannot output both true and false at the same time, otherwise it would be a contradiction.
+\end{itemize}
+
+\newpage
+\section{Problem 4}
+\begin{enumerate}
+    \item[4a)]$$\exists x \in \mathbb{Z}, ((x + 10) \mid (x^3 + 100)) \land (\forall x_0 \in \mathbb{Z}, ((x_0 + 10) \mid (x_0^3 + 100)) \implies x_0 \leq x)$$
+    \item[4b)]$$\forall x \in \mathbb{Q}, (x < 0) \implies (\exists x_0 \in \mathbb{Q}, (x_0 < 0) \land x_0 > x)$$
+    \item[4c)]
+    \begin{flalign*}
+        &\exists x \in \mathbb{N}, (\exists k \in \mathbb{N}, x + 1 = 2k) \land (Prime(x))\land \\
+        &(\forall x_0 \in \mathbb{N}, ((Prime(x_0)) \land (\exists k_2 \in \mathbb{N}, x_0 + 1 = 2k_2)) \implies x_0 \geq x)
+    \end{flalign*}
+\end{enumerate}
+
+\end{document}

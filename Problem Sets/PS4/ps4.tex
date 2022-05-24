@@ -1,0 +1,416 @@
+\documentclass[12pt]{article}
+
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[margin=2cm,headheight=3ex]{geometry}
+\usepackage{csc}
+\usepackage{fancyhdr}
+\usepackage{csquotes}
+\usepackage[normalem]{ulem}
+\usepackage{enumerate}
+\usepackage{listings,lstautogobble}
+\usepackage[usenames,dvipsnames]{color}
+
+\renewcommand\labelitemi{{\boldmath$\cdot$}}
+
+% \newcommand{\R}{\mathbb{R}}
+% \newcommand{\N}{\mathbb{N}}
+% \newcommand{\Z}{\mathbb{Z}}
+\definecolor{yellow}{RGB}{255,255,232}
+\newcommand{\inlinecode}{\lstinline[basicstyle=\ttfamily\normalsize, prebreak=]}
+\newcommand{\T}{\True}
+\newcommand{\F}{\False}
+\theoremstyle{definition}
+\newtheorem{case}{Case}
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{Junaid Arshad, Sadeed Ahmed, \& Frederick Meneses}}
+\rhead{\fancyplain{}{CSC165 - Problem Set 4}}
+
+% Document Metadata
+\title{CSC165 - Problem Set 4}
+\author{Junaid Arshad, Sadeed Ahmed, \& Frederick Meneses}
+\date{April 8, 2022}
+
+% Custom Python Syntax
+\lstset
+{
+    backgroundcolor=\color{yellow},
+    basicstyle=\footnotesize\ttfamily,
+    commentstyle=\color{Green},
+    keywordstyle=\color{Cerulean},
+    frame=lines,
+    language=python,
+    morekeywords={True, False},
+    numbers=left,
+    numbersep=10pt,
+    numberstyle=\footnotesize\color{Gray},
+    showstringspaces=false,
+    stringstyle=\color{Mulberry},
+    tabsize=3,
+}
+
+% Color Numbers
+\lstset
+{
+    literate=%
+    {0}{{{\color{Orange}0}}}1
+    {1}{{{\color{Orange}1}}}1
+    {2}{{{\color{Orange}2}}}1
+    {3}{{{\color{Orange}3}}}1
+    {4}{{{\color{Orange}4}}}1
+    {5}{{{\color{Orange}5}}}1
+    {6}{{{\color{Orange}6}}}1
+    {7}{{{\color{Orange}7}}}1
+    {8}{{{\color{Orange}8}}}1
+    {9}{{{\color{Orange}9}}}1
+}
+
+\begin{document}
+\maketitle
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~SECTION 1~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\section{Nested Loops}
+Consider the following algorithm:
+\lstinputlisting[language=Python]{code/twisty_too.py}
+\begin{enumerate}[(a)]
+    \item The lower bound on the number of iterations of Loop 1, as a function of the input n, is shown below:
+        \begin{proof}
+        
+        \begin{itemize}
+            \item Lower bound on the number of iterations corresponds to the maximum change for the loop variable $i$.
+            \item The maximum that the value of the loop variable $i$ can change is by 4. i.e., if $i$ starts off as a number that is divisible by 4 then before going into loop 3, its value will decrease once and then after that loop 3 will iterate an additional 3 times until the value of $i$ is again divisible by 4 and we go back to loop $1$. Thus, the value of $i$ will decrease by at most 4 and thus the loop will keep running until the loop condition becomes false.
+            \item Since $i$ starts off as $n$, the upper bound on the value of $i$ after $k$ iterations ($i_k$) is $n-4 k$. Moreover, the loop condition becomes false when:
+            \begin{align*}
+                &i_{k} \leq 0
+            \end{align*}
+            \item Thus the lower bound of the number of iterations of loop 1 is:
+            \begin{align*}
+                &n-4 k \leq 0 \\
+                &k \geqslant \frac{n}{4} 
+            \end{align*}
+        \end{itemize}
+        \end{proof}
+    
+    \item The upper bound on the number of iterations of Loop 1, as a function of the input n, is shown below:
+        \begin{proof}
+            $\newline$
+            \begin{itemize}
+                \item Upper bound on the number of loop iterations corresponds to the minimum possible change in the loop variable $i$. 
+                \item The minimum change in the loop variable $i$ is also the same as the maximum change.
+                \begin{itemize}
+                    \item The case when $i$ is divisible by 4 , the lower bound on the value of the loop variable $i$ after $k$ iterations is equal to the upper bound found in part (a)
+                    \item When the remainder of $i$ divided by 4 is 1 then in the first iteration of loop 1, $i$ only decreases by 1 and starting in the second iteration of loop 1, it follows the same behaviour as described in part (a) because it's now divisible by 4.
+                    \item When the remainder of $i$ after division by 4 is 2, then after the first iteration of loop 1 its value decreases by 2 but in every subsequent loop after that its value decreases by 4 as $i$ now becomes divisible by 4.
+                    \item Similarly for when remainder of $i$ after division by 4 is 3, in this case the value of $i$ decreases by 3 in the first iteration of loop 1 and then in every subsequent iteration, it decreases by $4$.
+                \end{itemize}
+                \item Thus, the lower bound on value of the loop variable $i$ after $k$ iterations is also $i_{k}=n-4 k$ The upper bound on the number of iterations then is:
+            \begin{align*}
+                i_{k} & \leq 0 \\
+                n-4 k & \leq 0 \\
+                k & \geqslant \frac{n}{4}
+            \end{align*}
+            \end{itemize}
+        \end{proof}
+    
+    \item The Theta bound on the running time function RT(n) for algorithm twisty\_too is shown below:
+        \begin{proof}
+            $\newline$
+            \textbf{\underline{Loop 2:}} 
+            \begin{itemize}
+                \item Loop body takes 1 steps
+                \item Loop stops when the value of j after k iterations, $j_{k}$, becomes $\geq i$. Looking at the values of $j_k$ we notice that, $j_{0} = 0, j_1 = 1, j_2 = 4, j_3 = 9, j_4 = 16, ..., j_k = k^2$. Since loop stops when $j_k \geq i$, we get that:
+                \begin{align*}
+                    k^2 &\geq i \\ 
+                    k &\geq \sqrt{i} \\
+                \end{align*}
+                \item Thus the loop iterates at least $k = \ceil{\sqrt{i}}$ times and the total cost for this loop is $= \ceil{\sqrt{i}}$
+            \end{itemize}
+            $\newline$
+            \textbf{\underline{Loop 3:}} 
+            \begin{itemize}
+            \item Loop body takes: $1$ step
+            \item Loop iterations: The loop runs $\leq$ 3 times so no matter the input, the number of iterations is always a constant
+            \item Therefore, the total cost of loop 3 $\in \Theta(1)$
+            \end{itemize}
+            $\newline$
+            \textbf{\underline{Loop 1:}} 
+             \begin{itemize}
+                 \item Loop body takes: $\sqrt{i} + 1$ steps. This is because both loop 2 and loop 3 are inside loop 1 and since they are executed in sequence, we just add up the total cost of each loop.  
+                 \item Loop iterations: From our answer to part (a), we know that the upper and lower bound on the number of loop iterations of loop 1 is $\frac{n}{4}$. Moreover, we also know that the as loop 1 iterates, the value of i goes from $n$ all the way down to $1$.
+                 \item To obtain the total cost, we have to add up the cost of each iteration of loop 1, as $i$ goes from $1$ to $n$:
+                 \begin{align*}
+                     \sum_{i=1}^{n}(\sqrt{i} + 1)
+                 \end{align*}
+                 \textbf{\underline{For the upper bound:}}
+                 \item We will show that the expression above has a matching upper and lower bound of $n^{3/2}$ \\
+                 \begin{align*}
+                     \sum_{i=1}^{n}(\sqrt{i} + 1) &\leq \sum_{i=1}^{n}(\sqrt{n} + 1) \tag{using the fact that $\sqrt{i} \leq \sqrt{n}$} \\ 
+                     &= \sum_{i'=0}^{n-1} (\sqrt{n} + 1) \tag{change of indices} \\ 
+                     &= (\sqrt{n})(n-1) + 1(n-1) \in \bigO(n^{3/2})
+                 \end{align*}
+                 \item Thus, the upper bound on the expression for the total cost is $n^{3/2}$.
+                 
+                 $\newline$
+                 \textbf{\underline{For the lower bound:}}
+                 \begin{align*}
+                     \sum_{i=1}^{n} (\sqrt{i} + 1) &= \sum_{i=1}^{\ceil{\frac{n}{2}}} (\sqrt{i} + 1) + \sum_{i=\ceil{\frac{n}{2}}+1}^{n} (\sqrt{i} + 1)
+                 \end{align*}
+                 \item Using the fact that for the second summation: $i \geq \ceil{\frac{n}{2}}+1 \geq \frac{n}{2} \implies \sqrt{i} \geq \sqrt{\frac{n}{2}} $
+                 %\begin{align*}
+                     %i \geq \ceil{\frac{n}{2}+1} \geq \frac{n}{2} &\implies \sqrt{i} \geq \sqrt{\frac{n}{2}} 
+                 %\end{align*}
+                 \begin{align*}
+                     \sum_{i=1}^{\ceil{\frac{n}{2}}} (\sqrt{i} + 1) + \sum_{i=\ceil{\frac{n}{2}}+1}^{n} (\sqrt{i} + 1) &\geq \sum_{i=1}^{\ceil{\frac{n}{2}}} (1) + \sum_{i=\ceil{\frac{n}{2}}+1}^{n} \left(\sqrt{\frac{n}{2}} + 1\right) \\
+                     &= \ceil{\frac{n}{2}} + \sum_{i'=0}^{n-\left(\ceil{\frac{n}{2}}+1\right)}\left(\sqrt{\frac{n}{2}} + 1\right) \tag{change of index} \\
+                     &= \ceil{\frac{n}{2}} + \ceil{\frac{n}{2}} \left(n-\left(\ceil{\frac{n}{2}}+1\right) \right) \in \Omega(n^{3/2})
+                 \end{align*}
+                 \item Therefore, since the total running time function $RT(n)$ for algorithm \texttt{twisty\_too} is in $\bigO(n^{3/2})$ and in $\Omega(n^{3/2})$, we can conclude that it is also in $\Theta(n^{3/2})$
+             \end{itemize}
+        \end{proof}
+
+\end{enumerate}
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~SECTION 2~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\newpage
+\section{Worst-case and Best-case}
+\setcounter{equation}{0}
+\newcommand{\cbrt}[1]{\sqrt[3]{#1}}
+Consider the following algorithm:
+\lstinputlisting[language=Python]{code/long_prod.py}
+\begin{enumerate}[(a)]
+    \item Since loop 1 runs exactly $n$ iterations, in order for the running time to be in $\Theta(n^{4/3})$, it must be that loop 2 runs in approximately $\sqrt[3]{n}$ steps.
+        
+        %As \texttt{long\_prod} has both an inner and outer loop which depend on the input size, and because the outer loop runs exactly $n$ times, we will intuitively presume that the the inner loop will run approximately $n^{1/3}$, or $\sqrt[3]{n}$, iterations per run of Loop 1. This is because of the \textit{product of powers rule}, where we may write $n^{4/3}$ in the following way:
+        %\begin{align*}
+         %   n^{4/3} = n \cdot n^{1/3}
+        %\end{align*}
+        \begin{proof}
+            Let $n \in \N$ and assume that $n \geq 2$. \\
+            Let \inlinecode{lst} be a list of length n where all the elements are equal to $\sqrt[3]{n}$. i.e., \\ \inlinecode{lst = [n ** 1/3, n ** 1/3, ..., n ** 1/3]}. Let $t = \ceil{\cbrt{n}^{\cbrt{n}}}$, where $t \in \Z^+$.
+            
+            \texttt{Loop 1} will run for exactly $n$ iterations as the value of the loop variable $i$ goes from $1$ to $n$ inclusive, as seen in Line 6.
+            
+            \texttt{Loop 2} has two stopping conditions:
+            \begin{enumerate}[i)]
+                \item \inlinecode{j >= 0}
+                \item \inlinecode{p * lst[j] <= t}
+            \end{enumerate}
+            
+            The first stopping condition (\inlinecode{j >= 0}) for \texttt{Loop 2} is dependent on $i$ since $j_k = i - 1 - k < 0$.
+            
+            \texttt{Loop 2} will run for $i$ iterations if the value of $i < \ceil{\cbrt{n}}$. In this case, the second stopping condition, \inlinecode{p * lst[j] <= t} will remain $\True$ because $\sqrt[3]{n}$ will be multiplied with itself less than $\sqrt[3]{n}$ times so will always remain $\leq t$. Thus, loop 2 will end once the first stopping condition, \inlinecode{j >= 0} becomes \False. 
+            
+           % The second stopping condition (\inlinecode{p * lst[j] <= t}) determines the number of iterations for \textt{Loop2} when the first stopping condition remains \True. We manipulate it as follows to get the total iterations for this loop, where $k \in \Z$ is the number of iterations of \textt{Loop 2} and $p_k$ is the value of $p$ after $k$ iterations have occurred:
+           %\begin{align*}
+           %    p_k \cdot \texttt{lst[j]} &> t \\
+           %    \implies \texttt{lst[j]}^{k+1} &> t + 1 &\tag{from definition of $p_k$} \\
+           %    \implies k + 1 &> \log_{\texttt{lst[j]}}t \\
+           %    \implies \log_{\texttt{lst[j]}}t &\geq k &\tag{$k + 1 > x \geq k$} \\
+           %    &= \floor{\log_{\texttt{lst[j]}}t} 
+           %\end{align*}
+            
+            Thus, after $\ceil{\cbrt{n}}+1$ elements in the list have been parsed, \texttt{Loop 2} will always iterate $\cbrt{n}$ times. This is because the first loop condition will remain $\True$ long enough for the second loop condition to now evaluate to $\False$. More explicitly, this is because $\cbrt{n}$ will be multiplied by itself $\cbrt{n}$ times, and since $t = \cbrt{n}^{\cbrt{n}}$, \textt{Loop 2} will run for no more than $\cbrt{n}$ iterations.
+            %Furthermore, note that the \textt{if} block in Line 13 does not contribute to the running time of \texttt{long\_prod}.
+            
+            Mathematically, the total cost of this algorithm for the specified input family can be expressed as:
+            \begin{align*}
+                &=\sum^{\ceil{\cbrt{n}}}_{i = 1} i + \sum^{n+1}_{i = \ceil{\cbrt{n}} + 1} \cbrt{n}\\
+                &=\frac{\cbrt{n}(\cbrt{n} + 1)}{2} + \sum^{n - \ceil{\cbrt{n}}}_{i' = 0} (\cbrt{n}) \tag{change of indices}\\
+                &= \frac{n^{2/3} + n^{1/3}}{2} + \cbrt{n} (n - \cbrt{n})\\
+                &= \frac{n^{2/3}+ n^{1/3}}{2} + n^{4/3} - n^{2/3} \in \Theta (n^{4/3})
+            \end{align*}
+            Therefore, the running time of \inlinecode{long_prod} with our specified input family is $\Theta (n^{4/3})$.
+        \end{proof}
+    
+    \item The upper-bound on the worst-case running time of \texttt{long\_prod}, with proof, is shown below:
+        \begin{proof}
+            Let $n \in \N$. Let $x =$ \inlinecode{(lst, t)} be an arbitrary input family where the size of the input list \inlinecode{lst} is length $n$; every element of \inlinecode{lst} is positive; $t \in \Z^+$ \\
+            Loop 2 runs at most $i$ times for each iteration of Loop 1. Assuming that the second condition in Loop 2 is \texttt{True}, the loop keeps running until $j < 0$. Since the value of $j$ starts from $i-1$ and goes down to $0$, the number of times Loop 2 iterates is at most $i$. \\
+            Loop 1 iterates at most $n+1-1 = n$ times. 
+            %Line 8 counts as a basic operations for the loop body. Furthermore, we may conclude an upper bound if statement in Line 13 runs as a basic operation for Loop 1. Lines 5, 15 count as basic operations. 
+            The value of $i$ goes from 1 to n and since the loop body depends on $i$, the total number of iterations is:
+            \begin{align*}
+            RT_{long\_prod}(x) &= \sum_{i=1}^{n}(i + 2)\\
+            &= \frac{n(n+1)}{2} \in \bigO(n^2)
+            \end{align*}
+            This result shows $WC_{\texttt{long\_prod}}(\inlinecode{lst}, t) \in \bigO(n^2)$
+            %$\max\{\text{running time of executing \texttt{long\_prod(x)}} \mid x \in \mathcal{I}_n\} \leq 2 + \frac{n(n+1)}{2} \in \mathcal{O}(n^2)$
+        \end{proof}
+    
+    \item The lower-bound on the worst-case running time of \texttt{long\_prod}, with proof, is shown below:
+        \begin{proof}
+            Let $n \in \N$. Let \inlinecode{t = 2} and let \inlinecode{lst} be a list of length $n$ where all the elements are equal to 1 i.e., \inlinecode{lst = [1, 1, ..., 1]}. In this case, Loop 2 iterates $i$ times for each iteration of Loop 1. This is because the second loop condition in Loop 2 (\inlinecode{...p * lst[j] <= t}) is always \texttt{True} since no matter how many elements of \inlinecode{lst} are multiplied with each other, they are always $\leq t$. Therefore, loop 2 iterates until \inlinecode{j < 0} becomes \texttt{True}. \\
+            The value of j starts from $i-1$ and goes down by 1 for each iteration of Loop 2. Thus, loop 2 iterates $i$ times. \\
+            Moreover, Loop 1 iterates n times i.e., the value of i goes from 1 to n, therefore the total number of iterations in this case is:
+            %The value of the if statement on Line 13, should not count as a basic operation.
+            \begin{align*}
+                RT_{long\_prod}(\texttt{lst, t}) &= \sum_{i = 1}^n i \\
+                &= \frac{n(n+1)}{2} \in \Omega(n^2)
+            \end{align*}
+            This result shows $WC_{\texttt{long\_prod}}(\inlinecode{lst}, t) \in \Omega(n^2)$. 
+            
+            %$\max\{\text{running time of executing \texttt{long\_prod(x)}} \mid x \in \mathcal{I}_n\} \geq 2 + \frac{n(n+1)}{2} \in \Omega(n^2)$
+            Since our upper bound and lower bound are the same expression, this analysis is sufficient to conclude:
+            $WC_{long\_prod}(\texttt{lst, t}) \in \Theta(n^2)$
+        \end{proof}
+        
+    \item The tight-bound on the best-case running time of \texttt{long\_prod}, with proof, is shown below:
+        \begin{proof}
+        \textbf{\underline{Upper bound on the Best Case Running Time:}}
+            
+            
+            Let $n \in \N$.
+            Let \inlinecode{t = 1}, and let \texttt{lst} be a list of length $n$ where all the elements are equal to 2 i.e., \inlinecode{lst = [2, 2, ..., 2]}.
+            
+            In this case, Loop 2 doesn't iterate at all because the second condition (\inlinecode{...p * lst[j] <= t}) is always \texttt{False}. The reason it's always \texttt{False} is because since \inlinecode{p = 1}, the only value \inlinecode{p * lst[j]} can have is 2, which is \inlinecode{> t = 1}\\
+            Loop 1 iterates at most $n$ times and since the loop body takes constant time (independent of input size) then the total number of iterations in this case is: $n \cdot 1 = n$ iterations.
+            
+            Thus $BC_{long\_prod}(\texttt{lst, t}) \in \mathcal{O}(n)$ 
+            
+            \textbf{\underline{Lower bound on the Best Case Running Time:}}
+            
+            Let $n \in \N$. Let \texttt{(lst, t)} be any input family where the size of the input list \texttt{lst} is $n$; every element of \texttt{lst} is positive; \texttt{t} $\in \Z^+$. 
+            For all input lists, Loop 1 runs at least $n$ iterations and the loop body (including Loop 2) takes at least 1 step. Therefore, the total number of iterations is: $n \cdot 1 = n$
+            
+            Thus $BC_{long\_prod}(\texttt{lst, t}) \in \Omega(n)$ 
+            
+            This is sufficient to conclude $BC_{long\_prod}(\texttt{lst, t}) \in \Theta(n)$
+            
+        \end{proof}
+\end{enumerate}
+
+\newpage
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~SECTION 3~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\newcommand{\f}{\texttt{alpha\_min}}
+\section{Average-Case Analysis}
+\newcommand{\I}{\mathcal{I}_n}
+\newcommand{\Ifour}{\mathcal{I}_4}
+\newcommand{\SEI}{|\{s \in \I | \texttt{ alpha\_min}(s) \text{ returns }k\}|}
+\setcounter{equation}{0}
+Consider the following algorithm:
+\lstinputlisting[language=Python]{code/alpha_min.py}
+For each $n \in \N$ with $n \geq 2$, let $\mathcal{I}_n$ be the set that contains all strings of length n with 2 $b$’s and $(n - 2) a$’s, in any order. (For example, $\mathcal{I}_4 = \{aabb, abab, abba, baab, baba, bbaa\}$.)\\
+Note that $|\I| = \binom{n}{2} = \frac{n(n - 1)}{2}$ because each element of $\I$ is made up of $n$ individual characters, all but
+two of which are equal to $a$, and there are exactly $\binom{n}{2}$ many different ways to choose the 2 positions that will contain b.
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~SECTION 3A~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+\begin{enumerate}[(a)]
+    \item Let $n \in \N$ with $n \geq 2$, and let $k$ be the value returned by $\f(s)$, for some input $s \in \I$. An expression for the ``exact" number of steps executed by $\f(s)$ is: 
+
+    \begin{itemize}
+        \item Let $s$ be str of length $n$ belonging to $\I$. By definition, $s$ has 2 $b$'s and $(n-2)$ $a$'s.
+        \item Value to be returned, $k$, starts from $n-1$ (last $str$ element)
+        and decreases by 1 every time the element before it is $\leq$ element at $k$ i.e, everytime the loop runs.
+        \item If the entire str is sorted then $k$ goes down to 0 and $\f(s)$ iterates $n-0=n$ - $k$ times.
+        \item If the str is not sorted to begin with i.e., the last 2 elements of the str are '..ba' then the loop doesn't execute at all and in this case $\f(s)$ runs $n-(n-1)=n-k$ times where $k=n-1$ since it doesn't decrease at all.
+        \item Thus, the exact number of iterations of $\f(s)$ are $n-k$.
+    \end{itemize}
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~SECTION 3B~~~~~~~~~~~~~~~~~~~~~~~~~~
+    \item The expression for the exact average-case running time of $\f$  over the set of inputs $\Ifour$ is calculated and shown below, in the form of a simplified, concrete rational number:
+
+        $\newline$
+        Let $s_{1}, s_{2}, s_{3}, s_{4}, s_{5}, s_{6}$ be the strings in the set $\Ifour$ i.e.,
+        
+        \begin{itemize}
+        \item $s_{1}=aabb$: Here, str $s_{1}$ is sorted after $k=i=0$ so $RT_\f(s_{1})=n-k=4-0=4$
+        \item $s_{2}=abab$: Here, str $s_{2}$ is sorted after $k=i=2$ so $RT_\f(s_{2})=n-k=4-2=2$
+        \item $s_{3}=abba$: Here, str $s_{3}$ is sorted after $k=i=3$ so $RT_\f(s_{3})=n-k=4-3=1$
+        \item $s_{4}=baab$: Here, str $s_{4}$ is sorted after $k=i=1$ so $RT_\f(s_{4})=n-k=4-1=3$
+        \item $s_{5}=baba$: Here, str $s_{5}$ is sorted after $k=i=3$ so $RT_\f(s_{5})=n-k=4-3=1$
+        \item $s_{6}=bbaa$: Here, str $s_{6}$ is sorted after $k=i=2$ so $RT_\f(s_{6})=n-k=4-2=2$
+        \end{itemize}
+        \begin{itemize}
+            \item Let $AC(4)$ be the average of the runtimes over all inputs $s \in \Ifour$.
+            \item Let $RT(s)$ be the runtime of $\f(s)$ on str s.
+            \item Given that $\Ifour=\{a a b b, a b a b, a b b a, b a a b, b a b a, b b a a\}$, we know that $\left|\Ifour\right|=6$.
+            \item By definition of average case, we know that:
+            \begin{align*}
+                AC(4) &= \frac{1}{\left|\Ifour\right|} \sum_{s \in \Ifour} RT(s) \\
+                 &=\frac{R T\left(s_{1}\right)+R T\left(s_{2}\right)+R T\left(s_{3}\right)+R T\left(s_{4}\right)+R T\left(s_{5}\right)+R T\left(s_{6}\right)}{\left|\Ifour\right|} \\
+                &=\frac{13}{6}
+            \end{align*}
+        \end{itemize}
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~SECTION 3C~~~~~~~~~~~~~~~~~~~~~~~~~~
+    \item The exact expression for the number of inputs such that $s \in \I$ returns $k$, i.e., \newline
+    $\SEI$, is calculated below:
+    
+        The value of $k$ returned by $\texttt{alpha\_min}(s)$ is between $0$ and $n-1$. For each $n \in \N$ and each $j \in \{1, 2,\ldots,n-2\}$, let $S_{n, j}$ denote the set of strings $s$ where one of the $b$'s occurs at position $j-1$.
+        %$\{s \in \mathcal{I}_{n} \mid \texttt{alpha\_min(s)} \text{ returns } k \}$
+        
+        %Note, $k$ is the index of first unsorted 'b'.
+        
+        %We will split the rest of this proof into cases depending on our return value $k$.
+        
+        \textbf{\underline{The number of inputs for which $k=0$}}, i.e. $|\{s \in \I| \texttt{ alpha\_min}(s) \text{ returns } 0\}|$
+        
+        There is only a single possible string for which the value of $k$ returned is $0$, which is the string $s$ in which the last 2 elements are both $b$ and the remaining elements are $a$. 
+        
+        Let $S_{n, 0}$ be the string where one of the $b$'s is at $-1$ and the other one is at $-2$. For this string, $k=0$ since all the other elements are equal to  $a$ and the entire string is sorted. ( i.e., $|S_{n, 0}|=1$).
+        $\newline$
+    
+        \textbf{\underline{The number of inputs for which $1 \leqslant k \leqslant n-2$}}, i.e., $\SEI$
+        
+        
+        For $n \in \mathbb{N}$ and for $j \in\{1, \ldots ., n-2\}$, let $S_{n, j}$ denote the set of strings $s$ where one of the $b$'s occurs at index $j-1$.
+        
+        \begin{itemize}
+            \item For $k=1$, the number of possible strings are $\left|S_{n, 1}\right|=1$. This is because, with one of the $b$'s at index 0, the only place that the second $b$ can be at while still having the remaining string sorted is at index $n-1$.
+            \item For $k=2$, the number of possible strings are $\left|S_{n, 2}\right|=2$. This is because with one of the b's at index 1, the only places that the second $b$ can be at while still having the remaining string sorted is at index 0 or $n-1$.
+            \item For $k=3$, the number of possible strings are $\left|S_{n, 3}\right|=3$. This is because with one of the $b$'s at index 2, the only places that the second $b$ can be at while still having the remaining string sorted is at index 0, 1, or $n-1$.
+            \newline
+            \vdots 
+            \item For $k=j$, the number of possible strings are $\left|S_{n, j}\right|=j$. This is because with one of the $b$'s at index $j-1$, the only places that the second $b$ can be at while still having the remaining string sorted is at index 0, 1, $\ldots$, $j-2$ or $n-1$.
+        \end{itemize}
+
+        \textbf{\underline{The number of inputs for which $k=n-1$}}, i.e., $|\{s \in \I| \texttt{ alpha\_min}(s) \text{ returns } n-1\}|$
+    
+        There are $n-2$ possible strings in this case. This is because $k=n-1$ is only possible when there's an $a$ at index $n-1$ and a $b$ at index $n-2$. This means the other $b$ can be at index $0,1, \ldots .$, or $n-3$ (n-2 possible positions). Thus, $n-2$ strings are possible for which $k=n-1$.
+        
+        Let $S_{n, n-1}$ be the string $s$ where one of the $b$'s is at $n-2$ and $k=n-1$. We know $\left|S_{n, n-1}\right|=n-2$ by our observation above.
+            
+            %\case{$k = 0$}\\
+            %$|S_{n, 0}| = 1$ In this case, our input is the string where the last two elements are 'b' and the first n-2 elements are 'a', where the list is sorted. Only one of these strings appear in the entire set.
+            
+            %\case{$1 \leq k \leq n - 2$}\\
+            %$|S_{n, k}|$ for which $1 \leq k \leq n - 2$. 
+            %In this case our $k$ lies in the string. 
+            %For $n \in \N$ and $k \in \{1, 2, ..., n - 2\}$
+            
+            %For $k = 1$, the number of possible strings are $|S_{n, 1}| = 1$ because when 'b' is at 1, the remaining string is sorted from \inlinecode{s[2:]} and the
+            
+            %For $k = 2$, the number of possible strings are $|S_{n, 1}| = 1$ because when 'b' is at 1, the remaining string is sorted from \inlinecode{s[2:]} and the
+            
+            %In summary, the number of ways to sort \inlinecode{s[:k]} = k
+            %$|S_{n, k}| = \binom{k - 1}{1} = k$
+            %\case {$k = n - 1$}
+            
+            %$|S_{n, k}| = \binom{k - 1}{1} = k - 1$
+            %\case {$k > n - 1$}
+            %$|S_{n, k}| = 0$
+            %In this case, k lies outside the string and is not considered.
+        
+    \item The average-case analysis of $\f$ for the input set $\I$ (with an exact expression) is shown below:
+
+        \begin{align*}
+        AC(n) &=\frac{1}{\left|\I\right|} \sum_{S_{n, j} \in \I} R T\left(S_{n, j}\right) \\
+        &=\frac{1}{\left(\frac{n(n-1)}{2}\right)} \sum_{j=0}^{n-1}\left|S_{n, j}\right| \cdot (n-k) \\
+        &=\frac{2}{n(n-1)}\left(\left|S_{n, 0}\right| \cdot (n-0)+\sum_{j=1}^{n-2}\left|S_{n, j}\right| \cdot (n-k)+\left|S_{n, n-1}\right| \cdot (n-k)\right) \\
+        &=\frac{2}{n(n-1)}\left((1 \times n)+\sum_{j=1}^{n-2} \left(j \cdot \big(n-j)\right)+(n-2)\cdot(n-(n-1)\big)\right) \\
+        &=\frac{2}{n(n-1)}\left(n+\sum_{j=1}^{n-2} n \cdot j-\sum_{j=1}^{n-2} j^{2}+(n-2)\right)  \\ 
+        &\text{Using the given hint, we know that:}\\
+        &=\frac{2}{n(n-1)}\left(2 n-2+n\left(\frac{(n-2)(n-2+1)}{2}\right)-\frac{(n-2)(n-2+1)(2(n-2)+1)}{6}\right)\\
+        &=\frac{2}{n(n-1)}\left(2(n-1)+n\left(\frac{(n-2)(n-1)}{2}\right)-\frac{(n-2)(n-1)(2 n-3)}{6}\right) \\
+        &=\frac{4}{n}+(n-2)-\left(\frac{(n-2)(2 n-3)}{3 n}\right)
+        \end{align*}
+
+\end{enumerate}
+\end{document}
